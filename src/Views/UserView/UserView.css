@@ -1,0 +1,9 @@
+.welcome-banner{
+    text-align: center;
+    color: white;
+    padding-top: 40px;
+}
+
+.welcome-banner h1{
+    margin-bottom: 80px;
+}
