@@ -1,6 +1,5 @@
 import React from "react";
 
-import Button from "react-bootstrap/esm/Button";
 import Table from "react-bootstrap/Table";
 
 import "./BankAdminPannel.css";
