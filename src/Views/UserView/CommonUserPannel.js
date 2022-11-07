@@ -1,5 +1,6 @@
 import React from "react";
 
+import IconButton from "../../Components/IconButton";
 import Button from "react-bootstrap/esm/Button";
 import { BiPlus } from "react-icons/bi";
 
@@ -12,14 +13,9 @@ const CommonUserPannel = (props) => {
         <div className="welcome-banner">
         <h1>Welcome {props.user}!</h1>
         <p>Looking for a new loan?</p>
-        <Button variant="primary" size="lg">
-          <div className="icon-btn">
-            <span className="text-span">Create new inquiry</span>
-            <span className="icon-span">
-              <BiPlus size="25"/>
-            </span>
-          </div>
-        </Button>
+        <IconButton icon={<BiPlus size="25"/>} variant="primary" size="lg" className="new-inq-btn">
+          Create new inquiry
+        </IconButton>
       </div>
         <div className="lists-buttons">
         <Button variant="light">

@@ -2,6 +2,8 @@ import React from "react";
 
 import "./LoginView.css";
 
+import IconButton from "../../Components/IconButton";
+import ContentCard from "../../Components/ContentCard";
 import Button from "react-bootstrap/Button";
 import { SiAzuredevops } from "react-icons/si";
 
@@ -25,22 +27,17 @@ const LoginView = () => {
         </span>
       </div>
 
-      <div className="login-card">
+      {/* <div className="login-card"> */}
+      <ContentCard className="login-card">
         <h3>One of the best Credit Comparing Websites</h3>
         <p>{adText}</p>
-        <Button variant="primary">
-          <span class="btn-text">Login with Azure Ad</span>
-          <span class="btn-icon">
-            {" "}
-            <SiAzuredevops />
-          </span>
-        </Button>
+        <IconButton icon={<SiAzuredevops />} variant="primary">Login with Azure Ad</IconButton>
         <hr />
         <p>Don't have an account?</p>
         <Button variant="primary mb-3">Register Now</Button>
         <p>or</p>
         <Button variant="primary">Create an annonymous inquiry</Button>
-      </div>
+      </ContentCard>
     </div>
   );
 };

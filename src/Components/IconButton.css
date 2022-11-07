@@ -1,0 +1,15 @@
+.icon-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-span{
+    display: inline-flex;
+    align-items: center;
+    margin-left: 5px;
+}
+
+.btn{
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}

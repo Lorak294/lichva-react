@@ -1,6 +1,8 @@
 import React from "react";
 
 import Table from "react-bootstrap/Table";
+import Button from "react-bootstrap/Button";
+import ContentCard from "../../Components/ContentCard";
 
 import "./BankAdminPannel.css";
 
@@ -11,38 +13,40 @@ const BankAdminPannel = (props) => {
         <h1>Welcome {props.user}!</h1>
       </div>
       <div className="offer-list-section">
-        <div className="offer-list-container">
-          <h4>Offers made by your Bank:</h4>
+        <ContentCard>
+          <h3>Offers made by your Bank:</h3>
           <Table striped bordered hover>
             <thead>
               <tr>
                 <th>#</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Username</th>
+                <th>Client</th>
+                <th>Ammount</th>
+                <th>Commision</th>
+                <th>Number of payments</th>
+                <th>Duration</th>
+                <th>Creation Date</th>
+                <th>State</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td colSpan={2}>Larry the Bird</td>
-                <td>@twitter</td>
+                <td>Mark the Client</td>
+                <td>300.000$</td>
+                <td>15%</td>
+                <td>120</td>
+                <td>10 years</td>
+                <td>26.11.2022</td>
+                <td>Active</td>
+                <td>
+                  <Button variant="success">Accept</Button>
+                  <Button variant="danger">Decline</Button>
+                </td>
               </tr>
             </tbody>
           </Table>
-        </div>
+          </ContentCard>
       </div>
     </div>
   );

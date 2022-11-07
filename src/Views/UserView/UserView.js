@@ -3,6 +3,7 @@ import React from "react";
 import TopMenu from "../../Components/TopMenu";
 import CommonUserPannel from "./CommonUserPannel";
 import BankAdminPannel from "./BankAdminPannel";
+import PageAdminPannel from "./PageAdminPannel";
 import "./UserView.css";
 
 const UserView = () => {
@@ -16,8 +17,9 @@ const UserView = () => {
   return (
     <div>
       <TopMenu onLogoutClick={logoutHandler}/>
-      {/* <CommonUserPannel user={userStr}/> */}
-      <BankAdminPannel user={userStr}/>
+      <CommonUserPannesl user={userStr}/>
+      {/* <BankAdminPannel user={userStr}/> */}
+      {/* <PageAdminPannel user={userStr}></PageAdminPannel> */}
     </div>
   );
 };
