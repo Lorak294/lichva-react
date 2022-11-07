@@ -1,0 +1,39 @@
+.welcome-banner{
+    text-align: center;
+    color: white;
+    padding-top: 40px;
+}
+
+.welcome-banner h1{
+    margin-bottom: 80px;
+}
+
+.btn-lg{
+   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+   align-items: center;
+   min-height: 30px;
+}
+
+.icon-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-span{
+    display: inline-flex;
+    align-items: center;
+    margin-left: 5px;
+}
+
+.lists-buttons{
+    margin-top: 30px;
+    display: inline-grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 5px
+}
+
+.btn-light{
+    margin: 20px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}

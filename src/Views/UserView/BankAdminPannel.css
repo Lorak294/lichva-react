@@ -1,0 +1,36 @@
+.offer-list-section{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
+.offer-list-container{
+    background-color: rgba(240, 255, 255, 0.8);
+    border-radius: 15px;
+    width: fit-content;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    padding: 20px;
+}
+
+.offer-list-container h4{
+    margin: 20px;
+}
+
+
+.btn-light{
+    margin: 20px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
+.welcome-banner{
+    text-align: center;
+    color: white;
+    padding-top: 40px;
+}
+
+.welcome-banner h1{
+    margin-bottom: 80px;
+}
