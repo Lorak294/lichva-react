@@ -11,6 +11,7 @@ import "./RegistrationForm.css";
 
 const RegistrationForm = (props) => {
   const [validated, setValidated] = useState(false);
+  const [selectedGovId,setSelectedGovId] = useState("");
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -21,6 +22,12 @@ const RegistrationForm = (props) => {
 
     setValidated(true);
   };
+
+  const handleGovIdChange = (event) => {
+    const selectBox = event.currentTarget;
+    setSelectedGovId((prev) => {return selectBox.value;});
+  }
+
 
 
   return (
@@ -37,10 +44,6 @@ const RegistrationForm = (props) => {
 
         <Row>
           <Col>
-            {/* <FloatingLabel controlId="formName" label="Name">
-              <Form.Control required type="text" placeholder="Name" />
-              <Form.Control.Feedback type="invalid ">Provide a Name.</Form.Control.Feedback>
-            </FloatingLabel> */}
             <Form.Group className="mb-3" controlId="formName">
               <Form.Label>Name</Form.Label>
               <Form.Control required type="text" placeholder="Enter Name" />
@@ -49,10 +52,6 @@ const RegistrationForm = (props) => {
           </Col>
 
           <Col>
-            {/* <FloatingLabel controlId="formSurame" label="Surame">
-              <Form.Control required type="text" placeholder="Surame" />
-              <Form.Control.Feedback type="invalid ">Provide a Surame.</Form.Control.Feedback>
-            </FloatingLabel> */}
             <Form.Group className="mb-3" controlId="formSurname">
               <Form.Label>Surname</Form.Label>
               <Form.Control required type="text" placeholder="Enter Surame" />
@@ -61,63 +60,35 @@ const RegistrationForm = (props) => {
           </Col>
         </Row>
 
-        {/* <FloatingLabel
-          className="mb-3"
-          controlId="formJobType"
-          label="Job Type"
-        >
-          <Form.Select aria-label="Select Job Type">
-            <option value="1">Job Type One</option>
-            <option value="2">Job Type Two</option>
-            <option value="3">Job Type Three</option>
-            <option value="4">Other</option>
-          </Form.Select>
-        </FloatingLabel> */}
-
         <Form.Group className="mb-3" controlId="formJobType">
           <Form.Label>Job Type</Form.Label>
-          <Form.Select aria-label="Select Job Type">
+          <Form.Select required aria-label="Select Job Type">
+            <option value="" hidden="true"></option>
             <option value="1">Job Type One</option>
             <option value="2">Job Type Two</option>
             <option value="3">Job Type Three</option>
             <option value="4">Other</option>
           </Form.Select>
+          <Form.Control.Feedback type="invalid">Select one of the Job Types</Form.Control.Feedback>
         </Form.Group>
 
         <Row className="mb-3">
           <Col sm={5}>
-            {/* <FloatingLabel
-              controlId="govIdType"
-              label="Gov ID Type"
-              className="mb-3"
-            >
-              <Form.Select aria-label="Select Gov ID type">
-                <option value="1">Gov ID Type One</option>
-                <option value="2">Gov ID Type Two</option>
-                <option value="3">Gov ID Type Three</option>
-              </Form.Select>
-            </FloatingLabel> */}
             <Form.Group className="mb-3" controlId="formGovIdType">
               <Form.Label>Job Type</Form.Label>
-              <Form.Select aria-label="Select Gov ID type">
+              <Form.Select required aria-label="Select Gov ID type" onChange={handleGovIdChange}>
+                <option value="" hidden="true"></option>
                 <option value="1"> Gov ID Type One </option>
                 <option value="2"> Gov ID Type Two </option>
                 <option value="3"> Gov ID Type Three </option>
               </Form.Select>
+              <Form.Control.Feedback type="invalid">Select one of the Gov ID Types</Form.Control.Feedback>
             </Form.Group>
           </Col>
           <Col>
-            {/* <FloatingLabel
-              controlId="govIdValue"
-              label="Gov ID"
-              className="mb-3"
-            >
-              <Form.Control required type="text" placeholder="Enter Gov ID" />
-              <Form.Control.Feedback type="invalid ">Provide a valid Gov ID.</Form.Control.Feedback>
-            </FloatingLabel> */}
             <Form.Group className="mb-3" controlId="formGovIdValue">
               <Form.Label>Gov ID</Form.Label>
-              <Form.Control required type="text" placeholder="Enter Gov ID"/>
+              <Form.Control required type="text" disabled={!selectedGovId} placeholder={selectedGovId}/>
               <Form.Control.Feedback type="invalid">Provide a valid Gov ID</Form.Control.Feedback>
             </Form.Group>
           </Col>
