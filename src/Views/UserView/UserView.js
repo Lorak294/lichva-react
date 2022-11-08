@@ -17,7 +17,7 @@ const UserView = () => {
   return (
     <div>
       <TopMenu onLogoutClick={logoutHandler}/>
-      <CommonUserPannesl user={userStr}/>
+      <CommonUserPannel user={userStr}/>
       {/* <BankAdminPannel user={userStr}/> */}
       {/* <PageAdminPannel user={userStr}></PageAdminPannel> */}
     </div>
