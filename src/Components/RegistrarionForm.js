@@ -7,7 +7,7 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 
-import "./RegistrationForm.css";
+import "./RegistrarionForm.css";
 
 const RegistrationForm = (props) => {
   const [validated, setValidated] = useState(false);
