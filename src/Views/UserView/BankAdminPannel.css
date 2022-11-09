@@ -9,14 +9,13 @@
     margin: 20px;
 }
 
+.btn{
+    margin:5px;
+}
+
 .table thead{
     text-align: center;
     vertical-align: middle;
-}
-
-.btn-light{
-    margin: 20px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 
 .welcome-banner{

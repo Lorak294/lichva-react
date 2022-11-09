@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
@@ -6,7 +6,42 @@ import ContentCard from "../../Components/ContentCard";
 
 import "./BankAdminPannel.css";
 
+const tmpOffersData = [
+  {
+    id: 0,
+    client: "Marcin Najman",
+    ammount: 100000,
+    cost: 20000,
+    installments: "24",
+    creationDate: "01.01.2000",
+    status: "Active",
+  },
+  {
+    id: 1,
+    client: "Krzysztof Kononowicz",
+    ammount: 2000,
+    cost: 120,
+    installments: "36",
+    creationDate: "17.02.2004",
+    status: "Declined",
+  },
+];
+
 const BankAdminPannel = (props) => {
+  const [offers, setOffers] = useState([]);
+
+  const getOffers = () => {
+    console.log("getting offers");
+    setOffers((prev) => {
+      return tmpOffersData;
+    });
+  };
+
+  // only once on component first render
+  useEffect(() => {
+    getOffers();
+  }, []);
+
   return (
     <div>
       <div className="welcome-banner">
@@ -18,35 +53,37 @@ const BankAdminPannel = (props) => {
           <Table striped bordered hover>
             <thead>
               <tr>
-                <th>#</th>
                 <th>Client</th>
                 <th>Ammount</th>
-                <th>Commision</th>
-                <th>Number of payments</th>
-                <th>Duration</th>
-                <th>Creation Date</th>
-                <th>State</th>
+                <th>Installments</th>
+                <th>Cost</th>
+                <th>Creation date:</th>
+                <th>Status</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>Mark the Client</td>
-                <td>300.000$</td>
-                <td>15%</td>
-                <td>120</td>
-                <td>10 years</td>
-                <td>26.11.2022</td>
-                <td>Active</td>
-                <td>
-                  <Button variant="success">Accept</Button>
-                  <Button variant="danger">Decline</Button>
-                </td>
-              </tr>
+              {offers.map((offerObj) => (
+                <tr key={offerObj.id}>
+                  <td>{offerObj.client}</td>
+                  <td>{offerObj.ammount}</td>
+                  <td>{offerObj.installments}</td>
+                  <td>{offerObj.cost}</td>
+                  <td>{offerObj.creationDate}</td>
+                  <td>{offerObj.status}</td>
+                  <td>
+                    {offerObj.status !== "Declined" && (
+                      <div>
+                        <Button variant="success">Accept</Button>
+                        <Button variant="danger">Decline</Button>
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </Table>
-          </ContentCard>
+        </ContentCard>
       </div>
     </div>
   );

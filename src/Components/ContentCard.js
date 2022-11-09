@@ -4,7 +4,7 @@ import "./ContentCard.css";
 
 const ContentCard = (props)=>{
     return(
-        <div className={(props.className && props.className) + " content-card"}>
+        <div className={`content-card ${props.className}`}>
             {props.children}
         </div>
     );

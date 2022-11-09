@@ -9,6 +9,10 @@
     margin: 20px;
 }
 
+.table{
+    background-color: white;
+}
+
 .table thead th{
     text-align: center;
     vertical-align: middle;

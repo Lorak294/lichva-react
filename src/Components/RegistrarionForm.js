@@ -5,7 +5,6 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import FloatingLabel from "react-bootstrap/FloatingLabel";
 
 import "./RegistrarionForm.css";
 
@@ -75,7 +74,7 @@ const RegistrationForm = (props) => {
         <Row className="mb-3">
           <Col sm={5}>
             <Form.Group className="mb-3" controlId="formGovIdType">
-              <Form.Label>Job Type</Form.Label>
+              <Form.Label>Gov ID Type</Form.Label>
               <Form.Select required aria-label="Select Gov ID type" onChange={handleGovIdChange}>
                 <option value="" hidden="true"></option>
                 <option value="1"> Gov ID Type One </option>
