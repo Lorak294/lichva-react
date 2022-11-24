@@ -13,9 +13,9 @@
     margin:5px;
 }
 
-.table thead{
-    text-align: center;
-    vertical-align: middle;
+.table{
+    text-align: center !important;
+    vertical-align: middle !important;
 }
 
 .welcome-banner{

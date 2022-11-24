@@ -5,21 +5,49 @@ import CommonUserPannel from "./CommonUserPannel";
 import BankAdminPannel from "./BankAdminPannel";
 import PageAdminPannel from "./PageAdminPannel";
 import "./UserView.css";
+import { useNavigate } from "react-router-dom";
 
-const UserView = () => {
+import {exampleUser} from "../../Constants and definitions/ExampleData";
+import {roles} from "../../Constants and definitions/Enums";
+
+let user = exampleUser;
+
+const UserView = (props) => {
+  const navigate = useNavigate();
+
+  if(!user){
+    console.log("no logged-in user -> redirecting to login-page");
+    navigate("/");
+  }
+
   // BUTTON HANDLERS
   const logoutHandler = () => {
-    console.log("external logout clicked");
+    console.log("logout clicked -> redirecting to login-page");
+    navigate("/");
   };
 
-  const userStr = "Example user";
+  const renderSwitch = (userRole) => {
+    console.log("inside switch");
+    switch(userRole){
+      case roles.admin:
+        console.log("case admin");
+        return <PageAdminPannel user={user}/>;
+      case roles.employee:
+        console.log("case employee");
+        return <BankAdminPannel user={user}/>;
+      case roles.user:
+        console.log("case user");
+        return <CommonUserPannel user={user}/>;
+      default:
+        console.log("case default");
+        return <p className="background-black"/>;
+    }
+  }
 
   return (
     <div>
-      <TopMenu onLogoutClick={logoutHandler}/>
-      {/* <CommonUserPannel user={userStr}/> */}
-      <BankAdminPannel user={userStr}/>
-      {/* <PageAdminPannel user={userStr}></PageAdminPannel> */}
+      <TopMenu onLogoutClick={logoutHandler} user={user}/>
+      {renderSwitch(user.role)}
     </div>
   );
 };

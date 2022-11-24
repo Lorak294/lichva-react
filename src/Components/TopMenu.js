@@ -2,12 +2,11 @@ import React from "react";
 import "./TopMenu.css";
 
 import IconButton from "./IconButton";
-import Button from "react-bootstrap/Button";
 import { FiLogOut } from "react-icons/fi";
 import { CgProfile } from "react-icons/cg";
 
 // PROPS TO PASS:
-//  - user:             string with username
+//  - user:             user object
 //  - onLogoutclick:    hander for clicking the Logout button
 
 const TopMenu = (props) => {
@@ -18,7 +17,7 @@ const TopMenu = (props) => {
           <CgProfile size={30} />
         </span>
         <span className="profile-span-username">
-          {props.user || "Example User"}
+          {`${props.user.first_name} ${props.user.last_name}` || "Example User"}
         </span>
       </span>
       <span className="logout-button-span">

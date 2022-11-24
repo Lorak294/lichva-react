@@ -15,6 +15,7 @@ const tmpOffersData = [
     installments: "24",
     creationDate: "01.01.2000",
     status: "Active",
+    pdfLink: "https://en.wikipedia.org/wiki/Cock_and_ball_torture",
   },
   {
     id: 1,
@@ -24,6 +25,7 @@ const tmpOffersData = [
     installments: "36",
     creationDate: "17.02.2004",
     status: "Declined",
+    pdfLink: "https://kononopedia.pl/wiki/Uniwersum_Szkolnej_17",
   },
 ];
 
@@ -57,7 +59,8 @@ const BankAdminPannel = (props) => {
                 <th>Ammount</th>
                 <th>Installments</th>
                 <th>Cost</th>
-                <th>Creation date:</th>
+                <th>Creation date</th>
+                <th>Documents</th>
                 <th>Status</th>
                 <th>Actions</th>
               </tr>
@@ -66,11 +69,12 @@ const BankAdminPannel = (props) => {
               {offers.map((offerObj) => (
                 <tr key={offerObj.id}>
                   <td>{offerObj.client}</td>
-                  <td>{offerObj.ammount}</td>
+                  <td>{offerObj.ammount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} $</td>
                   <td>{offerObj.installments}</td>
-                  <td>{offerObj.cost}</td>
+                  <td>{offerObj.cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} $</td>
                   <td>{offerObj.creationDate}</td>
-                  <td>{offerObj.status}</td>
+                  <td><a href={offerObj.pdfLink} target="_blank" rel="noreferrer">PDF</a></td>
+                  <td className="fw-bold">{offerObj.status}</td>
                   <td>
                     {offerObj.status !== "Declined" && (
                       <div>

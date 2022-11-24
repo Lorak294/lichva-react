@@ -5,15 +5,26 @@ import Button from "react-bootstrap/esm/Button";
 import { BiPlus } from "react-icons/bi";
 
 import "./CommonUserPannel.css";
+import { Outlet, useNavigate } from "react-router-dom";
 
+
+// PROPS TO PASS:
+//  - user:             user object
 
 const CommonUserPannel = (props) => {
+    const navigate = useNavigate();  
+
+    const newInqHandler = () =>{
+       navigate(`/user/newinquiry`,{state: props.user});
+    }
+  
+  
     return(
       <div>
         <div className="welcome-banner">
-        <h1>Welcome {props.user}!</h1>
+        <h1>Welcome {props.user.first_name}!</h1>
         <p>Looking for a new loan?</p>
-        <IconButton icon={<BiPlus size="25"/>} variant="primary" size="lg" className="new-inq-btn">
+        <IconButton icon={<BiPlus size="25"/>} variant="primary" size="lg" className="new-inq-btn" onClick={newInqHandler}>
           Create new inquiry
         </IconButton>
       </div>
@@ -32,6 +43,7 @@ const CommonUserPannel = (props) => {
           </p>
         </Button>
       </div>
+      <Outlet/>
       </div>
     );
 }

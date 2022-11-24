@@ -7,11 +7,20 @@ import Row from "react-bootstrap/Row";
 
 import "./NewInquiryForm.css";
 import Button from "react-bootstrap/esm/Button";
+import { useNavigate } from "react-router-dom";
 
+import {job_categories,id_types} from "../Constants and definitions/Enums";
+
+
+// PROPS TO PASS:
+//  - user:             user object (empty for annonymous inq.)
 const NewInquiryForm = (props) => {
   
+  const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
   const [selectedGovId,setSelectedGovId] = useState("");
+
+  const annonymous = props.user == null;
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -23,9 +32,21 @@ const NewInquiryForm = (props) => {
     setValidated(true);
   };
 
+  const handleCancel = () => {
+    navigate(-1);
+  }
+
   const handleGovIdChange = (event) => {
     const selectBox = event.currentTarget;
     setSelectedGovId((prev) => {return selectBox.value;});
+  }
+
+  const stingifyField = (fieldName) => {
+    let s = "";
+    const words = fieldName.split('_');
+    words.forEach(word => ( s += (word.charAt(0).toUpperCase() + word.slice(1) +  ' ')));
+    s = s.slice(0,-1);
+    return s;
   }
 
   
@@ -41,14 +62,14 @@ const NewInquiryForm = (props) => {
             <Col>
               <Form.Group className="mb-3" controlId="formName">
                 <Form.Label>Name</Form.Label>
-                <Form.Control required type="text" placeholder="Enter Name" />
+                <Form.Control required type="text" placeholder="Enter Name" disabled={!annonymous} defaultValue={annonymous?"":props.user.first_name}/>
                 <Form.Control.Feedback type="invalid">Provide your Name.</Form.Control.Feedback>
               </Form.Group>
             </Col>
             <Col>
               <Form.Group className="mb-3" controlId="formSurname">
                 <Form.Label>Surame</Form.Label>
-                <Form.Control required type="text" placeholder="Enter Surame" />
+                <Form.Control required type="text" placeholder="Enter Surame" disabled={!annonymous} defaultValue={annonymous?"":props.user.last_name}/>
                 <Form.Control.Feedback type="invalid">Provide your Surname.</Form.Control.Feedback>
               </Form.Group>
             </Col>
@@ -56,18 +77,17 @@ const NewInquiryForm = (props) => {
 
           <Form.Group className="mb-3" controlId="formEmail">
             <Form.Label>Email</Form.Label>
-            <Form.Control required type="email" placeholder="Enter Email" />
+            <Form.Control required type="email" placeholder="Enter Email" disabled={!annonymous} defaultValue={annonymous?"":props.user.email}/>
             <Form.Control.Feedback type="invalid">Provide a valid email.</Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formJobType">
             <Form.Label>Job Type</Form.Label>
-            <Form.Select required aria-label="Select Job Type">
-              <option value="" hidden="true"></option>
-              <option value="1">Job Type One</option>
-              <option value="2">Job Type Two</option>
-              <option value="3">Job Type Three</option>
-              <option value="4">Other</option>
+            <Form.Select required aria-label="Select Job Type" disabled={!annonymous} defaultValue={annonymous?"":props.user.job_type}>
+              <option value="" hidden={true}></option>
+              {Object.keys(job_categories).map((job_type,index) =>(
+                <option key={index} value={index+1}>{stingifyField(job_type)}</option>
+              ))}
             </Form.Select>
             <Form.Control.Feedback type="invalid">Choose your job type.</Form.Control.Feedback>
           </Form.Group>
@@ -80,11 +100,13 @@ const NewInquiryForm = (props) => {
                   required
                   aria-label="Select Gov ID type"
                   onChange={handleGovIdChange}
+                  disabled={!annonymous}
+                  defaultValue={annonymous?"":props.user.id_type}
                 >
-                  <option value="" hidden="true"></option>
-                  <option value="1"> Gov ID Type One </option>
-                  <option value="2"> Gov ID Type Two </option>
-                  <option value="3"> Gov ID Type Three </option>
+                <option value="" hidden={true}></option>
+                {Object.keys(id_types).map((id_type,index) =>(
+                  <option key={index} value={index+1}>{stingifyField(id_type)}</option>
+                ))}
                 </Form.Select>
                 <Form.Control.Feedback type="invalid">
                   Select one of the Gov ID Types
@@ -99,6 +121,8 @@ const NewInquiryForm = (props) => {
                   type="text"
                   disabled={!selectedGovId}
                   placeholder={selectedGovId}
+                  readOnly = {!annonymous}
+                  defaultValue={annonymous?"":props.user.id_number}
                 />
                 <Form.Control.Feedback type="invalid">
                   Provide a valid Gov ID
@@ -129,6 +153,9 @@ const NewInquiryForm = (props) => {
         </section>
         <Button className="mt-3" variant="primary" type="submit" size="lg">
           Submit
+        </Button>
+        <Button className="mt-3" variant="danger" size="lg" onClick={handleCancel}>
+          Cancel
         </Button>
       </Form>
     </ContentCard>
