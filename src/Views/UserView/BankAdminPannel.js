@@ -47,7 +47,7 @@ const BankAdminPannel = (props) => {
   return (
     <div>
       <div className="welcome-banner">
-        <h1>Welcome {props.user}!</h1>
+        <h1>Welcome {props.user.first_name}!</h1>
       </div>
       <div className="offer-list-section">
         <ContentCard>

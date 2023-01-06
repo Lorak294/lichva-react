@@ -33,3 +33,5 @@ export const offer_status = Object.freeze({
   accepted: 3,
   declined: 4,
 });
+
+
