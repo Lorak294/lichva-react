@@ -1,0 +1,25 @@
+.main-container{
+    text-align: left;
+}
+
+.filtering-section{
+    display: flex;
+    gap: 1em;
+    width: auto;
+    flex-wrap: wrap;
+    margin: 5px;
+    justify-content: left;
+}
+
+.bank-div{
+    width: 100%;
+}
+
+.sorting-section{
+    display: flex;
+    gap: 1em;
+    width: auto;
+    flex-wrap: wrap;
+    margin: 5px;
+    justify-content: left;
+}

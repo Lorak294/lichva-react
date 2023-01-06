@@ -1,0 +1,13 @@
+.inq-container{
+    display: flex;
+    justify-content: space-around;
+    width: auto;
+    flex-wrap: wrap;
+    gap: 1em;
+    margin: 10px;
+    background-color: white;
+}
+
+.results-btn{
+    flex-grow: 0.2;
+}

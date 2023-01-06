@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { OfferRecord } from "../Record Components/OfferRecord";
-import { FilterComponent } from "./FIlterComponent";
+import { OfferFilterComponent } from "./OfferFIlterComponent";
 import Accordion from 'react-bootstrap/Accordion';
 
-import './Table.css';
 
 const OffersTable = (props) => {
 
@@ -56,7 +55,7 @@ const OffersTable = (props) => {
                 <Accordion.Item eventKey="0">
                     <Accordion.Header>Filtering and Sorting</Accordion.Header>
                     <Accordion.Body>
-                        <FilterComponent filterList={applyFiltersHandler}></FilterComponent>
+                        <OfferFilterComponent filterList={applyFiltersHandler}></OfferFilterComponent>
                     </Accordion.Body>
                 </Accordion.Item>
             </Accordion>

@@ -1,21 +1,14 @@
 import React from "react";
-import ContentCard from "../ContentCard";
 import Form from "react-bootstrap/Form";
 
-import "./FIlterComponent.css";
+import "./InquiryFilterComponent.css";
 import { Button } from "react-bootstrap";
 
-export const FilterComponent = (props) => {
+export const InquiryFilterComponent = (props) => {
 
     const handleSubmit = (event) =>
     {
         event.preventDefault();
-
-        var selectedBanks = Array.from(event.target.banks.options).filter(function (option) {
-            return option.selected;
-        }).map(function (option) {
-            return parseInt(option.value);
-        });
 
         const filterConditions = {
             minDate: event.target.minDate.value,
@@ -24,7 +17,6 @@ export const FilterComponent = (props) => {
             maxAmmount: event.target.maxAmmount.value,
             minInstallments: event.target.minInstallments.value,
             maxInstallments: event.target.maxInstallments.value,
-            banks: selectedBanks,
             sortby: event.target.sortby.value,
             sortMode: event.target.sortbyMode.value
         };
@@ -103,22 +95,6 @@ export const FilterComponent = (props) => {
               </Form.Group>
             </div>
           </div>
-
-          <div className="bank-div">
-            <strong>Banks</strong>
-            <Form.Group  className="mb-3" controlId="banks">
-                <Form.Select
-                aria-label="Select Banks"
-                multiple
-                >
-                    <option selected value={1001}>Bank 1</option>
-                    <option selected value={2001}>Bank 2</option>
-                    <option selected value={3001}>Bank 3</option>
-                </Form.Select>
-            </Form.Group>
-          </div>
-
-
         </section>
 
         <h5>Sorting</h5>
@@ -129,7 +105,6 @@ export const FilterComponent = (props) => {
                 aria-label="Select column to sort by"
                 >
                     <option value="creation_date">Created on</option>
-                    <option value="bank_id">Bank</option>
                     <option value="ammount">Ammount</option>
                     <option value="installments">Installments</option>
                 </Form.Select>
@@ -145,7 +120,7 @@ export const FilterComponent = (props) => {
                 </Form.Select>
             </Form.Group>
         </section>
-        <Button className="submit-btn" variant="primary" type="submit" size="lg">Apply filters</Button>
+        <Button variant="primary" type="submit" size="lg">Apply filters</Button>
       </Form>
     </div>
     //</ContentCard>
