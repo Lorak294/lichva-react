@@ -12,11 +12,13 @@ import OffersTable from './Components/Data Tables/OffersTable';
 
 function App() {
   return (
+
     <div className="App">
       {/* <LoginView></LoginView> */}
       {/* <UserView></UserView> */}
       {/* <RegistrationForm></RegistrationForm> */}
       {/* <NewInquiryForm></NewInquiryForm> */}
+      {/* test commit comment*/}
 
       <Router>
         <Routes>
