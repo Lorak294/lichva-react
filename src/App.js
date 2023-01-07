@@ -18,7 +18,6 @@ function App() {
       {/* <RegistrationForm></RegistrationForm> */}
       {/* <NewInquiryForm></NewInquiryForm> */}
 
-      // test comment for commit
       <Router>
         <Routes>
           <Route path='/' element={<LoginView/>}>
