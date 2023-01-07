@@ -62,7 +62,9 @@ export let exampleOffers = [
                 platform_id: 1001,
                 ammount: 20000,
                 installments: 36,
-                status:  offer_status.accepted
+                status:  offer_status.accepted,
+                generated_contract_url: "https://en.wikipedia.org/wiki/Sus_(genus)",
+                signed_contract_url: "https://en.wikipedia.org/wiki/Suinae"
         },
         {
                 id: 2004,
@@ -72,7 +74,9 @@ export let exampleOffers = [
                 platform_id: 2001,
                 ammount: 30000,
                 installments: 18,
-                status:  offer_status.offered
+                status:  offer_status.offered,
+                generated_contract_url: "https://en.wikipedia.org/wiki/Sus_(genus)",
+                signed_contract_url: ""
         },
         {
                 id: 2005,
@@ -82,6 +86,8 @@ export let exampleOffers = [
                 platform_id: 3001,
                 ammount: 17000,
                 installments: 12,
-                status:  offer_status.waiting_for_acceptance
+                status:  offer_status.waiting_for_acceptance,
+                generated_contract_url: "https://en.wikipedia.org/wiki/Sus_(genus)",
+                signed_contract_url: "https://en.wikipedia.org/wiki/Suinae"
         }
 ]

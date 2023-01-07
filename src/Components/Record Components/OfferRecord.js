@@ -2,13 +2,18 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import {format} from 'date-fns';
 import ContentCard from "../ContentCard";
+//import { OfferApplication } from "../OfferApplication";
 
 import "./OfferRecord.css";
 
 // PROPS:
 // offerObj: object with ofer data
+// offerApply: handler to navigate to offerAccept popup
 
 export const OfferRecord = (props) => {
+  //const [applyPopup,setApplyPopup] = useState(false);
+
+
   const getBankLogo = () => {
     // TEMPORARY BMW LOGO -> implement getting bank icon url from offer obj
 
@@ -20,6 +25,8 @@ export const OfferRecord = (props) => {
   const applyClick = () => {
     // implement apply form for offer
     console.log("Apply clicked on:" + JSON.stringify(props.offerObj));
+    //setApplyPopup(true);
+    props.offerApply(props.offerObj);
   }
 
   const seeInquiryDetailsClick = () => {
@@ -57,7 +64,13 @@ export const OfferRecord = (props) => {
           <strong>Installments:</strong>
           <p>{props.offerObj.installments}</p>
         </div>
+        <div>
+          <strong>Contract:</strong>
+          <p><a href={props.offerObj.generated_contract_url} target="_blank" rel="noreferrer">PDF</a></p>
+        </div>
         <Button variant="success" className="apply-btn" onClick={applyClick}>Apply</Button>
+
+        {/* {applyPopup && <OfferApplication offerObj={props.offerObj}/>} */}
     </ContentCard>
   );
 };

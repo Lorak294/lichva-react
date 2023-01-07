@@ -5,7 +5,10 @@ import UserView from './Views/UserView/UserView';
 import RegistrationForm from './Components/RegistrarionForm';
 import NewInquiryForm from './Components/NewInquiryForm';
 import InquiryBox from './Components/InquiryBox';
+import { OfferApplication } from './Components/OfferApplication';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import InquiriesTable from './Components/Data Tables/InquiriesTable';
+import OffersTable from './Components/Data Tables/OffersTable';
 
 function App() {
   return (
@@ -22,6 +25,11 @@ function App() {
           </Route>
           <Route path='/user' element={<UserView/>}>
             <Route path='newinquiry' element={<InquiryBox/>}/>
+            <Route path='offers' element= {<OffersTable/>}>
+              <Route path='apply' element={<OfferApplication/>}/>
+            </Route>
+            <Route path='inquiries' element= {<InquiriesTable/>}>
+            </Route>
           </Route>
         </Routes>
       </Router>

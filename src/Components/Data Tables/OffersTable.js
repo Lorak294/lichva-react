@@ -2,24 +2,55 @@ import React, { useState, useEffect } from "react";
 import { OfferRecord } from "../Record Components/OfferRecord";
 import { OfferFilterComponent } from "./OfferFIlterComponent";
 import Accordion from "react-bootstrap/Accordion";
+import ContentCard from "../ContentCard";
 import { Pagination } from "react-bootstrap";
+import { exampleOffers } from "../../Constants and definitions/ExampleData";
+
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import "./Table.css";
 
 const OffersTable = (props) => {
-  const [filteredData, setFilteredData] = useState(props.offData);
+  const [offData,setOffData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [activePage, setActivePage] = useState(1);
   const [pages, setPages] = useState([1]);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const user = location.state;
+  // console.log(" [R] USER INSIDE TABLE");
+  // console.log(user);
+  // console.log(" [R] OFF DATA");
+  // console.log(offData);
+  // console.log(" [R] FILTERED DATA");
+  // console.log(filteredData);
 
   const pageSize = 10;
 
-  const applyFiltersHandler = (filterConditions) => {
-    console.log("FILTER CONDITIONS: ");
-    console.log(filterConditions);
-    console.log("DATA: ");
-    console.log(props.offData);
+  const fetchOffers = async () => {
+    // const response = await axios.get("api_URL_HERE").catch(err => console.log(err));
 
-    const resultData = props.offData
+    // if(response){
+    //   const inqData = response.data;
+    //   console.log("Fatched Inquiries: ",inqData);
+    //   setInqData(inqData);
+    // }
+    console.log("fetching offers to a table...")
+    setOffData(exampleOffers);
+    setFilteredData(exampleOffers);
+    updatePages(exampleOffers.length);
+  }
+
+
+
+  const applyFiltersHandler = (filterConditions) => {
+    // console.log("FILTER CONDITIONS: ");
+    // console.log(filterConditions);
+    // console.log("DATA: ");
+    // console.log(offData);
+
+    const resultData = offData
       .filter(
         (offer) =>
           (filterConditions.minDate === "" ||
@@ -80,11 +111,16 @@ const OffersTable = (props) => {
     if (activePage < pages.length) setActivePage(activePage + 1);
   };
 
-  useEffect(() => updatePages(props.offData.length), []);
+  const offerApplyHandler = (offerObj) =>{
+    navigate(`/user/offers/apply`,{state: offerObj});
+  }
 
-  console.log(`Active page: ${activePage}`);
+  useEffect(() => {
+    fetchOffers();
+  }, []);
+
   return (
-    <div>
+    <ContentCard className="table-container">
       <Accordion>
         <Accordion.Item eventKey="0">
           <Accordion.Header>Filtering and Sorting</Accordion.Header>
@@ -99,7 +135,7 @@ const OffersTable = (props) => {
       {filteredData.length > 0 ? (
         filteredData
           .slice((activePage - 1) * pageSize, activePage * pageSize)
-          .map((offer) => <OfferRecord key={offer.id} offerObj={offer} />)
+          .map((offer) => <OfferRecord key={offer.id} offerObj={offer} offerApply={offerApplyHandler}/>)
       ) : (
         <p>No records meet the filter requirements.</p>
       )}
@@ -119,7 +155,8 @@ const OffersTable = (props) => {
           <Pagination.Next onClick={nextPage} />
         </Pagination>
       </div>
-    </div>
+      <Outlet/>
+    </ContentCard>
   );
 };
 

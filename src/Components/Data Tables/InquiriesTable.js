@@ -2,25 +2,46 @@ import React, { useEffect, useState } from "react";
 
 import { InquiryRecord } from "../Record Components/InquiryRecord";
 import { InquiryFilterComponent } from "./InquiryFIlterComponent";
-import { Accordion } from "react-bootstrap";
-import { Pagination } from "react-bootstrap";
+import Accordion from "react-bootstrap/Accordion";
+import ContentCard from "../ContentCard";
+import Pagination  from "react-bootstrap/Pagination";
+import { exampleInquiries } from "../../Constants and definitions/ExampleData";
+
+//import { useLocation, useNavigate } from "react-router-dom";
 
 import "./Table.css";
 
 const InquiriesTable = (props) => {
-  const [filteredData, setFilteredData] = useState(props.inqData);
+  const [inqData,setInqData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [activePage, setActivePage] = useState(1);
   const [pages, setPages] = useState([1]);
+  //const navigate = useNavigate();
+  //const location = useLocation();
 
   const pageSize = 10;
 
-  const applyFiltersHandler = (filterConditions) => {
-    console.log("FILTER CONDITIONS: ");
-    console.log(filterConditions);
-    console.log("DATA: ");
-    console.log(props.offData);
+  const fetchInquiries = async () => {
+    // const response = await axios.get("api_URL_HERE").catch(err => console.log(err));
 
-    const resultData = props.inqData
+    // if(response){
+    //   const inqData = response.data;
+    //   console.log("Fatched Inquiries: ",inqData);
+    //   setInqData(inqData);
+    // }
+    console.log("fetching inquiries to a table...")
+    setInqData(exampleInquiries);
+    setFilteredData(exampleInquiries);
+    updatePages(exampleInquiries.length);
+  }
+
+  const applyFiltersHandler = (filterConditions) => {
+    // console.log("FILTER CONDITIONS: ");
+    // console.log(filterConditions);
+    // console.log("DATA: ");
+    // console.log(inqData);
+
+    const resultData = inqData
       .filter(
         (inquiry) =>
           (filterConditions.minDate === "" ||
@@ -78,10 +99,12 @@ const InquiriesTable = (props) => {
     if (activePage < pages.length) setActivePage(activePage + 1);
   };
 
-  useEffect(() => updatePages(props.inqData.length), []);
+  useEffect(() => {
+    fetchInquiries();
+  }, []);
 
   return (
-    <div>
+    <ContentCard className="table-container">
       <Accordion>
         <Accordion.Item eventKey="0">
           <Accordion.Header>Filtering and Sorting</Accordion.Header>
@@ -106,6 +129,7 @@ const InquiriesTable = (props) => {
             <Pagination.Item
               active={page === activePage}
               onClick={pageClickHandler}
+              key={page}
             >
               {page}
             </Pagination.Item>
@@ -113,7 +137,7 @@ const InquiriesTable = (props) => {
           <Pagination.Next onClick={nextPage} />
         </Pagination>
       </div>
-    </div>
+    </ContentCard>
   );
 };
 
