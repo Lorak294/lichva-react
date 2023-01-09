@@ -12,6 +12,7 @@ export const InquiryRecord = (props) => {
 
     const seeResultsClick = () => {
         console.log("See results clicked on " + JSON.stringify(props.inqObj));
+        props.resultsHandler(props.inqObj);
     }
 
   return (

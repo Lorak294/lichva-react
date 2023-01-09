@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 
 import TopMenu from "../../Components/TopMenu";
 import CommonUserPannel from "./CommonUserPannel";
@@ -14,11 +14,6 @@ let user = exampleUser;
 
 const UserView = (props) => {
   const navigate = useNavigate();
-
-  if(!user){
-    console.log("no logged-in user -> redirecting to login-page");
-    navigate("/");
-  }
 
   // BUTTON HANDLERS
   const logoutHandler = () => {
@@ -43,6 +38,13 @@ const UserView = (props) => {
         return <p className="background-black"/>;
     }
   }
+
+  useEffect(() => {
+    if(!user){
+      console.log("no logged-in user -> redirecting to login-page");
+      navigate("/");
+    }
+  })
 
   return (
     <div>

@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 
 import "./LoginView.css";
 import logo from "../../logoLichva.png";
@@ -19,21 +20,39 @@ const LoginView = () => {
     enim, sed tempus magna congue non. Mauris tincidunt euismod magna
     vel euismod.`;
 
+  const annEnqHandler = () => {
+    navigate("/annonymousinquiry");
+  };
 
-    const annEnqHandler = () => {
-      navigate("/annonymousinquiry");
+  const loginHandler = () => {
+    navigate("/user");
+  };
+
+  const registerNowHandler = () => {
+    // EXAMPLE API CALL - to delete later
+    let inquiry = {
+      userId: 2137,
+      ammount: 42000,
+      installments: 69,
+    };
+    const headers = {
+      "Content-Type": "text/json",
+      "accept": "text/plain"
     };
 
-    const loginHandler = () => {
-      navigate("/user");
-    };
+    axios
+      .post("https://lichvanotitia.azurewebsites.net/api/Inquire", inquiry, {headers: headers})
+      .then((res) => {
+        console.log("PUT RESPONSE:");
+        console.log(res);
+      });
+  };
 
   return (
     <div>
-      
       <div className="logo-pannel">
         <span className="logo-span">
-          <img className="logo-img" src={logo} alt="logo"/>
+          <img className="logo-img" src={logo} alt="logo" />
         </span>
         <span className="slogan-span">
           <h1> Lich.va</h1>
@@ -44,14 +63,25 @@ const LoginView = () => {
       <ContentCard className="login-card">
         <h3>One of the best Credit Comparing Websites</h3>
         <p>{adText}</p>
-        <IconButton size="lg" icon={<SiAzuredevops />} variant="primary" onClick={loginHandler}>Login with Azure Ad</IconButton>
+        <IconButton
+          size="lg"
+          icon={<SiAzuredevops />}
+          variant="primary"
+          onClick={loginHandler}
+        >
+          Login with Azure Ad
+        </IconButton>
         <hr />
         <p>Don't have an account?</p>
-        <Button variant="primary mb-3" size="lg">Register Now</Button>
+        <Button variant="primary mb-3" size="lg" onClick={registerNowHandler}>
+          Register Now
+        </Button>
         <p>or</p>
-        <Button variant="primary" size="lg" onClick={annEnqHandler}>Create an annonymous inquiry</Button>
+        <Button variant="primary" size="lg" onClick={annEnqHandler}>
+          Create an annonymous inquiry
+        </Button>
       </ContentCard>
-      <Outlet/>
+      <Outlet />
     </div>
   );
 };

@@ -7,17 +7,20 @@ import ContentCard from "../ContentCard";
 import Pagination  from "react-bootstrap/Pagination";
 import { exampleInquiries } from "../../Constants and definitions/ExampleData";
 
-//import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import "./Table.css";
+import { Outlet } from "react-router-dom";
 
 const InquiriesTable = (props) => {
   const [inqData,setInqData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [activePage, setActivePage] = useState(1);
   const [pages, setPages] = useState([1]);
-  //const navigate = useNavigate();
-  //const location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const user = location.state; // to trzeba zmienić na handler do zdobycia danych
 
   const pageSize = 10;
 
@@ -99,6 +102,12 @@ const InquiriesTable = (props) => {
     if (activePage < pages.length) setActivePage(activePage + 1);
   };
 
+  const inqResultsHandler = (inqObj) => {
+    console.log("INQ OBJ INSIDE HANDLER:");
+    console.log(inqObj);
+    navigate(`/user/inquiries/results`,{state: inqObj});
+  }
+
   useEffect(() => {
     fetchInquiries();
   }, []);
@@ -113,11 +122,12 @@ const InquiriesTable = (props) => {
           </Accordion.Body>
         </Accordion.Item>
       </Accordion>
+      <Outlet/>
       <br />
       {filteredData.length > 0 ? (
         filteredData
           .slice((activePage - 1) * pageSize, activePage * pageSize)
-          .map((inquiry) => <InquiryRecord key={inquiry.id} inqObj={inquiry} />)
+          .map((inquiry) => <InquiryRecord key={inquiry.id} inqObj={inquiry} resultsHandler={inqResultsHandler}/>)
       ) : (
         <p>No records meet the filter requirements.</p>
       )}

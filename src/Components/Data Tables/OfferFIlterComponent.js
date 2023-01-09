@@ -1,8 +1,10 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
+import { OfferRecord } from "../Record Components/OfferRecord";
 
 import "./OfferFilterComponent.css";
 import { Button } from "react-bootstrap";
+import { offer_status } from "../../Constants and definitions/Enums";
 
 export const OfferFilterComponent = (props) => {
 
@@ -16,6 +18,12 @@ export const OfferFilterComponent = (props) => {
             return parseInt(option.value);
         });
 
+        var selectedStatuses = Array.from(event.target.status.options).filter(function (option) {
+          return option.selected;
+        }).map(function (option) {
+          return parseInt(option.value);
+        });
+
         const filterConditions = {
             minDate: event.target.minDate.value,
             maxDate: event.target.maxDate.value,
@@ -24,6 +32,7 @@ export const OfferFilterComponent = (props) => {
             minInstallments: event.target.minInstallments.value,
             maxInstallments: event.target.maxInstallments.value,
             banks: selectedBanks,
+            status: selectedStatuses,
             sortby: event.target.sortby.value,
             sortMode: event.target.sortbyMode.value
         };
@@ -117,6 +126,21 @@ export const OfferFilterComponent = (props) => {
             </Form.Group>
           </div>
 
+          <div className="status-div">
+            <strong>Status</strong>
+            <Form.Group  className="mb-3" controlId="status">
+                <Form.Select
+                aria-label="Select Status"
+                multiple
+                >
+                    <option selected value={offer_status.offered}>Offered</option>
+                    <option selected value={offer_status.waiting_for_acceptance}>Waiting for acceptance</option>
+                    <option selected value={offer_status.accepted}>Accepted</option>
+                    <option selected value={offer_status.declined}>Declined</option>
+                </Form.Select>
+            </Form.Group>
+          </div>
+
 
         </section>
 
@@ -131,6 +155,7 @@ export const OfferFilterComponent = (props) => {
                     <option value="bank_id">Bank</option>
                     <option value="ammount">Ammount</option>
                     <option value="installments">Installments</option>
+                    <option value="status">Status</option>
                 </Form.Select>
             </Form.Group>
 

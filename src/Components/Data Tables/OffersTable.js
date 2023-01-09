@@ -18,7 +18,7 @@ const OffersTable = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const user = location.state;
+  const user = location.state; // to trzeba zmienić na handler do zdobycia danych
   // console.log(" [R] USER INSIDE TABLE");
   // console.log(user);
   // console.log(" [R] OFF DATA");
@@ -36,10 +36,21 @@ const OffersTable = (props) => {
     //   console.log("Fatched Inquiries: ",inqData);
     //   setInqData(inqData);
     // }
-    console.log("fetching offers to a table...")
-    setOffData(exampleOffers);
-    setFilteredData(exampleOffers);
-    updatePages(exampleOffers.length);
+    if(props.refInq)
+    {
+      console.log("fetching offers which are result of inquiry to a table...");
+      console.log(props.refInq);
+      setOffData(exampleOffers);
+      setFilteredData(exampleOffers);
+      updatePages(exampleOffers.length);
+    }
+    else
+    {
+      console.log("fetching offers to a table...");
+      setOffData(exampleOffers);
+      setFilteredData(exampleOffers);
+      updatePages(exampleOffers.length);
+    }
   }
 
 
@@ -69,7 +80,10 @@ const OffersTable = (props) => {
             offer.installments <= filterConditions.maxInstallments) &&
           (filterConditions.banks.length === 0 ||
             filterConditions.banks === "" ||
-            filterConditions.banks.includes(offer.bank_id))
+            filterConditions.banks.includes(offer.bank_id)) &&
+          (filterConditions.status.length === 0 ||
+              filterConditions.status === "" ||
+              filterConditions.status.includes(offer.status))
       )
       .sort((a, b) => {
         let res;

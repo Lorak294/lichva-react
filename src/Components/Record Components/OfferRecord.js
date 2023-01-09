@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import {format} from 'date-fns';
 import ContentCard from "../ContentCard";
+import { offer_status } from "../../Constants and definitions/Enums";
 //import { OfferApplication } from "../OfferApplication";
 
 import "./OfferRecord.css";
@@ -29,22 +30,22 @@ export const OfferRecord = (props) => {
     props.offerApply(props.offerObj);
   }
 
-  const seeInquiryDetailsClick = () => {
-     // implement inquiry details popup
-    console.log("See Inquiry Details clicked on:" + JSON.stringify(props.offerObj));
-  }
+  // const seeInquiryDetailsClick = () => {
+  //    // implement inquiry details popup
+  //   console.log("See Inquiry Details clicked on:" + JSON.stringify(props.offerObj));
+  // }
 
   return (
     <ContentCard className="offer-container">
-        <div>
+        {/* <div>
           <strong>Offer</strong>
           <p>{props.offerObj.id}</p>
-        </div>
-        <div>
+        </div> */}
+        {/* <div>
           <strong>For inquiry</strong>
           <br/>
           <Button variant="primary" size="sm" onClick={seeInquiryDetailsClick}>See Inquiry Details</Button>
-        </div>
+        </div> */}
         <div>
           <strong>Created on:</strong>
           <p>{format(new Date(props.offerObj.creation_date), "dd/MM/yyyy")}</p>
@@ -68,7 +69,15 @@ export const OfferRecord = (props) => {
           <strong>Contract:</strong>
           <p><a href={props.offerObj.generated_contract_url} target="_blank" rel="noreferrer">PDF</a></p>
         </div>
-        <Button variant="success" className="apply-btn" onClick={applyClick}>Apply</Button>
+        <div>
+          <strong>Status:</strong>
+
+          {props.offerObj.status === offer_status.offered && <p className="status-text bg-primary">Offered</p>}
+          {props.offerObj.status === offer_status.waiting_for_acceptance && <p className="status-text bg-warning">Waiting for<br/>acceptance</p>}
+          {props.offerObj.status === offer_status.accepted && <p className="status-text bg-success">Accepted</p>}
+          {props.offerObj.status === offer_status.declined && <p className="status-text bg-danger">Declined</p>}
+        </div>
+        <Button variant="success" disabled={props.offerObj.status !== offer_status.offered} className="apply-btn" onClick={applyClick}>Apply</Button>
 
         {/* {applyPopup && <OfferApplication offerObj={props.offerObj}/>} */}
     </ContentCard>
