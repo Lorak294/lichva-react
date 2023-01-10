@@ -1,9 +1,8 @@
-.offer-list-section{
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    margin: auto;
+.offer-section{
+    width: 90%;
 }
+
+
 
 .content-card h3{
     margin: 20px;

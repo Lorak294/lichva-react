@@ -23,7 +23,7 @@ export const InquiryRecord = (props) => {
         </div>
         <div>
           <strong>Created on:</strong>
-          <p>{format(new Date(props.inqObj.creation_date), "dd/MM/yyyy")}</p>
+          <p>{format(new Date(props.inqObj.creationDate), "dd/MM/yyyy")}</p>
         </div>
         <div>
           <strong>Ammount:</strong>

@@ -28,20 +28,30 @@ const NewInquiryForm = (props) => {
       //event.preventDefault();
       event.stopPropagation();
       setValidated(true);
-    }
-    else{
+    } else {
       setValidated(true);
       // API CALL HERE
       let inquiry = {
-        userId: props.user.id,
+        userId: 1, //props.user.id,
         ammount: form.formLoanValue.value,
-        installments: form.formNOP.value
-      }
-      console.log(inquiry);
-      alert("Your inquiry has been submitted - you will receive an email with the results");
-      navigate("/user");
-    }
+        installments: form.formNOP.value,
+      };
+      
+      axios
+        .post('https://lichvanotitia.azurewebsites.net/api/Inquiry', inquiry)
+        .then((response) => {
+          console.log(response);
+          alert(
+            "Your inquiry has been submitted - you will receive an email with the results"
+          );
+          navigate("/user");
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
 
+      //console.log(inquiry);
+    }
   };
 
   const handleCancel = () => {

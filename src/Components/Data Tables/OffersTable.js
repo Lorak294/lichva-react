@@ -44,6 +44,14 @@ const OffersTable = (props) => {
       setFilteredData(exampleOffers);
       updatePages(exampleOffers.length);
     }
+    else if(props.refBank)
+    {
+      console.log("fetching offers form given bank to a table...");
+      console.log(props.refBank);
+      setOffData(exampleOffers);
+      setFilteredData(exampleOffers);
+      updatePages(exampleOffers.length);
+    }
     else
     {
       console.log("fetching offers to a table...");
@@ -65,10 +73,10 @@ const OffersTable = (props) => {
       .filter(
         (offer) =>
           (filterConditions.minDate === "" ||
-            Date.parse(offer.creation_date) >=
+            Date.parse(offer.creationDate) >=
               Date.parse(filterConditions.minDate)) &&
           (filterConditions.maxDate === "" ||
-            Date.parse(offer.creation_date) <=
+            Date.parse(offer.creationDate) <=
               Date.parse(filterConditions.maxDate)) &&
           (filterConditions.minAmmount === "" ||
             offer.ammount >= filterConditions.minAmmount) &&
@@ -80,10 +88,10 @@ const OffersTable = (props) => {
             offer.installments <= filterConditions.maxInstallments) &&
           (filterConditions.banks.length === 0 ||
             filterConditions.banks === "" ||
-            filterConditions.banks.includes(offer.bank_id)) &&
+            filterConditions.banks.includes(offer.bankId)) &&
           (filterConditions.status.length === 0 ||
               filterConditions.status === "" ||
-              filterConditions.status.includes(offer.status))
+              filterConditions.status.includes(offer.offerStatus))
       )
       .sort((a, b) => {
         let res;
@@ -149,7 +157,7 @@ const OffersTable = (props) => {
       {filteredData.length > 0 ? (
         filteredData
           .slice((activePage - 1) * pageSize, activePage * pageSize)
-          .map((offer) => <OfferRecord key={offer.id} offerObj={offer} offerApply={offerApplyHandler}/>)
+          .map((offer) => <OfferRecord key={offer.id} offerObj={offer} offerApply={offerApplyHandler} bankPerspective={props.refBank}/>)
       ) : (
         <p>No records meet the filter requirements.</p>
       )}

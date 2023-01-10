@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-import Table from "react-bootstrap/Table";
-import Button from "react-bootstrap/Button";
 import ContentCard from "../../Components/ContentCard";
+import OffersTable from "../../Components/Data Tables/OffersTable";
 
 import "./BankAdminPannel.css";
 
@@ -48,47 +47,11 @@ const BankAdminPannel = (props) => {
     <div>
       <div className="welcome-banner">
         <h1>Welcome {props.user.first_name}!</h1>
-      </div>
-      <div className="offer-list-section">
-        <ContentCard>
+        </div>
+        <ContentCard className="offer-section">
           <h3>Offers made by your Bank:</h3>
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>Client</th>
-                <th>Ammount</th>
-                <th>Installments</th>
-                <th>Cost</th>
-                <th>Creation date</th>
-                <th>Documents</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {offers.map((offerObj) => (
-                <tr key={offerObj.id}>
-                  <td>{offerObj.client}</td>
-                  <td>{offerObj.ammount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} $</td>
-                  <td>{offerObj.installments}</td>
-                  <td>{offerObj.cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} $</td>
-                  <td>{offerObj.creationDate}</td>
-                  <td><a href={offerObj.pdfLink} target="_blank" rel="noreferrer">PDF</a></td>
-                  <td className="fw-bold">{offerObj.status}</td>
-                  <td>
-                    {offerObj.status !== "Declined" && (
-                      <div>
-                        <Button variant="success">Accept</Button>
-                        <Button variant="danger">Decline</Button>
-                      </div>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
+          <OffersTable refBank={ "somebank" }></OffersTable>
         </ContentCard>
-      </div>
     </div>
   );
 };

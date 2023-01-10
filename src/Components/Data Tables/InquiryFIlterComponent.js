@@ -104,7 +104,7 @@ export const InquiryFilterComponent = (props) => {
                 <Form.Select
                 aria-label="Select column to sort by"
                 >
-                    <option value="creation_date">Created on</option>
+                    <option value="creationDate">Created on</option>
                     <option value="ammount">Ammount</option>
                     <option value="installments">Installments</option>
                 </Form.Select>

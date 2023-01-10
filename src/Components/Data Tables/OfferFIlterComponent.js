@@ -151,11 +151,11 @@ export const OfferFilterComponent = (props) => {
                 <Form.Select
                 aria-label="Select column to sort by"
                 >
-                    <option value="creation_date">Created on</option>
-                    <option value="bank_id">Bank</option>
+                    <option value="creationDate">Created on</option>
+                    <option value="bankId">Bank</option>
                     <option value="ammount">Ammount</option>
                     <option value="installments">Installments</option>
-                    <option value="status">Status</option>
+                    <option value="offerStatus">Status</option>
                 </Form.Select>
             </Form.Group>
 

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 import { InquiryRecord } from "../Record Components/InquiryRecord";
 import { InquiryFilterComponent } from "./InquiryFIlterComponent";
@@ -25,33 +26,37 @@ const InquiriesTable = (props) => {
   const pageSize = 10;
 
   const fetchInquiries = async () => {
-    // const response = await axios.get("api_URL_HERE").catch(err => console.log(err));
-
-    // if(response){
-    //   const inqData = response.data;
-    //   console.log("Fatched Inquiries: ",inqData);
-    //   setInqData(inqData);
-    // }
-    console.log("fetching inquiries to a table...")
-    setInqData(exampleInquiries);
-    setFilteredData(exampleInquiries);
-    updatePages(exampleInquiries.length);
+      
+    // TRZEBA ZMIENIĆ ŻEBY ŚCIĄGAŁO TYLKO INQ USERA A NA RAZIE BIERZE WSZYSTKIE
+    axios.get("https://lichvanotitia.azurewebsites.net/api/Inquiry").then((response) =>{
+      //console.log("inquireis have been fetched");
+      //console.log(response.data);
+      
+      setInqData(response.data);
+      setFilteredData(response.data);
+      updatePages(response.data.length);
+    })
+    .catch(err => console.log(err));
+    
+    // setInqData(exampleInquiries);
+    // setFilteredData(exampleInquiries);
+    // updatePages(exampleInquiries.length);
   }
 
   const applyFiltersHandler = (filterConditions) => {
     // console.log("FILTER CONDITIONS: ");
     // console.log(filterConditions);
-    // console.log("DATA: ");
-    // console.log(inqData);
+    //console.log("DATA: ");
+    //console.log(inqData);
 
     const resultData = inqData
       .filter(
         (inquiry) =>
           (filterConditions.minDate === "" ||
-            Date.parse(inquiry.creation_date) >=
+            Date.parse(inquiry.creationDate) >=
               Date.parse(filterConditions.minDate)) &&
           (filterConditions.maxDate === "" ||
-            Date.parse(inquiry.creation_date) <=
+            Date.parse(inquiry.creationDate) <=
               Date.parse(filterConditions.maxDate)) &&
           (filterConditions.minAmmount === "" ||
             inquiry.ammount >= filterConditions.minAmmount) &&
@@ -103,13 +108,20 @@ const InquiriesTable = (props) => {
   };
 
   const inqResultsHandler = (inqObj) => {
-    console.log("INQ OBJ INSIDE HANDLER:");
-    console.log(inqObj);
+    //console.log("INQ OBJ INSIDE HANDLER:");
+    //console.log(inqObj);
     navigate(`/user/inquiries/results`,{state: inqObj});
   }
 
   useEffect(() => {
-    fetchInquiries();
+    if(user)
+    {
+      fetchInquiries();
+    }
+    else
+    {
+      navigate('/user')
+    }
   }, []);
 
   return (
