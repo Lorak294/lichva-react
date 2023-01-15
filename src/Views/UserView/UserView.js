@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 
 import TopMenu from "../../Components/TopMenu";
 import CommonUserPannel from "./CommonUserPannel";
@@ -15,40 +15,28 @@ let user = exampleUser;
 const UserView = (props) => {
   const navigate = useNavigate();
 
-  // BUTTON HANDLERS
-  const logoutHandler = () => {
-    console.log("logout clicked -> redirecting to login-page");
-    navigate("/");
-  };
-
   const renderSwitch = (userRole) => {
-    console.log("inside switch");
-    switch(userRole){
-      case roles.admin:
-        console.log("case admin");
-        return <PageAdminPannel user={user}/>;
-      case roles.employee:
-        console.log("case employee");
-        return <BankAdminPannel user={user}/>;
-      case roles.user:
-        console.log("case user");
-        return <CommonUserPannel user={user}/>;
-      default:
-        console.log("case default");
-        return <p className="background-black"/>;
-    }
-  }
+    // switch(userRole){
+    //   case roles.admin:
+    //     console.log("case admin");
+    //     return <PageAdminPannel user={user}/>;
+    //   case roles.employee:
+    //     console.log("case employee");
+    //     return <BankAdminPannel user={user}/>;
+    //   case roles.user:
+    //     console.log("case user");
+    //     return <CommonUserPannel user={user}/>;
+    //   default:
+    //     console.log("case default");
+    //     return <p className="background-black"/>;
+    // }
 
-  useEffect(() => {
-    if(!user){
-      console.log("no logged-in user -> redirecting to login-page");
-      navigate("/");
-    }
-  })
+    return <CommonUserPannel user={user}/>;
+  }
 
   return (
     <div>
-      <TopMenu onLogoutClick={logoutHandler} user={user}/>
+      <TopMenu/>
       {renderSwitch(user.role)}
     </div>
   );
