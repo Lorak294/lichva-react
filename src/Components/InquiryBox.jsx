@@ -2,15 +2,12 @@ import React from "react";
 
 import Popup from "./Popup";
 import NewInquiryForm from "./NewInquiryForm";
-import { useLocation } from "react-router-dom";
-const InquiryBox = (props) => {
+const InquiryBox = () => {
     
-    const location = useLocation();
-    console.log(location.state);
     return(
         <div>
             <Popup>
-                <NewInquiryForm user={location.state}/>
+                <NewInquiryForm/>
             </Popup>
         </div>
     );

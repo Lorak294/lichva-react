@@ -4,13 +4,16 @@ import axios from "axios";
 import "./LoginView.css";
 import logo from "../../logoLichva.png";
 
+import {FcGoogle} from 'react-icons/fc';
 import ContentCard from "../../Components/ContentCard";
 import Button from "react-bootstrap/Button";
+import IconButton from "../../Components/IconButton";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { GoogleLogin } from "react-google-login";
 import { gapi } from "gapi-script";
 
 import {useAuth} from "../../Hooks/AuthProvider";
+import {refreshTokenSetup} from "../../Hooks/refreshTokenSetup";
 
 const LoginView = () => {
   const navigate = useNavigate();
@@ -29,24 +32,24 @@ const LoginView = () => {
 
   const registerNowHandler = () => {
     // EXAMPLE API CALL - to delete later
-    let inquiry = {
-      userId: 2137,
-      ammount: 42000,
-      installments: 69,
-    };
-    const headers = {
-      "Content-Type": "text/json",
-      accept: "text/plain",
-    };
+    // let inquiry = {
+    //   userId: 2137,
+    //   ammount: 42000,
+    //   installments: 69,
+    // };
+    // const headers = {
+    //   "Content-Type": "text/json",
+    //   accept: "text/plain",
+    // };
 
-    axios
-      .post("https://lichvanotitia.azurewebsites.net/api/Inquire", inquiry, {
-        headers: headers,
-      })
-      .then((res) => {
-        console.log("PUT RESPONSE:");
-        console.log(res);
-      });
+    // axios
+    //   .post("https://lichvanotitia.azurewebsites.net/api/Inquire", inquiry, {
+    //     headers: headers,
+    //   })
+    //   .then((res) => {
+    //     console.log("PUT RESPONSE:");
+    //     console.log(res);
+    //   });
   };
 
   // GOOGLE LOGIN - to clean up later now i want it separate
@@ -55,9 +58,11 @@ const LoginView = () => {
 
    const onLoginSuccess = (res) => {
      console.log("login success:", res);
+     refreshTokenSetup(res);
      
      
-     // TO DO: GET FULL USER DATA OBJECT AND INSERT IT HERE INSTEAD OF "res.profile.Obj".
+     // TO DO: GET FULL USER DATA OBJECT AND INSERT IT HERE INSTEAD OF "res.profileObj".
+     console.log(res);
      login(res.profileObj);
    };
    const onLoginFailure = (err) => {
@@ -101,6 +106,9 @@ const LoginView = () => {
           onFailure={onLoginFailure}
           cookiePolicy={"single_host_origin"}
           isSignedIn={user}
+          render={ renderProps => (
+            <IconButton variant='light' size="lg" icon ={<FcGoogle/>} onClick={renderProps.onClick} disabled={renderProps.disabled}>Sign in with Google</IconButton>
+          )}
         />
         <hr />
         <p>Don't have an account?</p>

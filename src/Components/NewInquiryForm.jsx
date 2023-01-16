@@ -11,15 +11,16 @@ import Button from "react-bootstrap/esm/Button";
 import { useNavigate } from "react-router-dom";
 
 import { job_categories, id_types } from "../Constants and definitions/Enums";
+import { useAuth } from "../Hooks/AuthProvider";
 
-// PROPS TO PASS:
-//  - user:             user object (empty for annonymous inq.)
-const NewInquiryForm = (props) => {
+const NewInquiryForm = () => {
   const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
   const [selectedGovId, setSelectedGovId] = useState("");
 
-  const annonymous = props.user == null;
+
+  const {user} = useAuth(); 
+  const annonymous = user == null;
 
   const handleSubmit = (event) => {
     const form = event.target;
@@ -32,7 +33,7 @@ const NewInquiryForm = (props) => {
       setValidated(true);
       // API CALL HERE
       let inquiry = {
-        userId: 1, //props.user.id,
+        userId: 1, //user.id,
         ammount: form.formLoanValue.value,
         installments: form.formNOP.value,
       };
@@ -91,7 +92,7 @@ const NewInquiryForm = (props) => {
                   type="text"
                   placeholder="Enter Name"
                   disabled={!annonymous}
-                  defaultValue={annonymous ? "" : props.user.first_name}
+                  defaultValue={annonymous ? "" : user.givenName}
                 />
                 <Form.Control.Feedback type="invalid">
                   Provide your Name.
@@ -106,7 +107,7 @@ const NewInquiryForm = (props) => {
                   type="text"
                   placeholder="Enter Surame"
                   disabled={!annonymous}
-                  defaultValue={annonymous ? "" : props.user.last_name}
+                  defaultValue={annonymous ? "" : user.familyName}
                 />
                 <Form.Control.Feedback type="invalid">
                   Provide your Surname.
@@ -122,7 +123,7 @@ const NewInquiryForm = (props) => {
               type="email"
               placeholder="Enter Email"
               disabled={!annonymous}
-              defaultValue={annonymous ? "" : props.user.email}
+              defaultValue={annonymous ? "" : user.email}
             />
             <Form.Control.Feedback type="invalid">
               Provide a valid email.
@@ -135,7 +136,7 @@ const NewInquiryForm = (props) => {
               required
               aria-label="Select Job Type"
               disabled={!annonymous}
-              defaultValue={annonymous ? "" : props.user.job_type}
+              defaultValue={annonymous ? "" : user.job_type}
             >
               <option value="" hidden={true}></option>
               {Object.keys(job_categories).map((job_type, index) => (
@@ -158,7 +159,7 @@ const NewInquiryForm = (props) => {
                   aria-label="Select Gov ID type"
                   onChange={handleGovIdChange}
                   disabled={!annonymous}
-                  defaultValue={annonymous ? "" : props.user.id_type}
+                  defaultValue={annonymous ? "" : user.id_type}
                 >
                   <option value="" hidden={true}></option>
                   {Object.keys(id_types).map((id_type, index) => (
@@ -181,7 +182,7 @@ const NewInquiryForm = (props) => {
                   disabled={!selectedGovId}
                   placeholder={selectedGovId}
                   readOnly={!annonymous}
-                  defaultValue={annonymous ? "" : props.user.id_number}
+                  defaultValue={annonymous ? "" : user.id_number}
                 />
                 <Form.Control.Feedback type="invalid">
                   Provide a valid Gov ID

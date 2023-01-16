@@ -31,7 +31,7 @@ const UserView = (props) => {
     //     return <p className="background-black"/>;
     // }
 
-    return <CommonUserPannel user={user}/>;
+    return <CommonUserPannel/>;
   }
 
   return (

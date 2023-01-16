@@ -6,6 +6,8 @@ import OffersTable from "./Data Tables/OffersTable";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 
+import "./InquiryResults.css"
+
 
 // pass throug state: inqObj
 
@@ -24,14 +26,14 @@ const InquiryResults = (props) => {
     useEffect(() => {
       if(!inqObj){
         console.log("no inqObj passed -> redirecting to user");
-        navigate("/user");
+        navigate("dashboard/user");
       }
     })
 
   return (
     <Popup>
-      <ContentCard className="bg-primary mt-300">
-        <Button variant="danger" onClick={closeHandler}>Close</Button>
+      <ContentCard className="bg-primary results-container" >
+        <Button className="close-button" variant="danger" size="lg" onClick={closeHandler}>Close</Button>
         <h4 className="text-white">Your inquiry results</h4>
         <div>
             <OffersTable refInq={inqObj}></OffersTable>

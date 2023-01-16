@@ -3,7 +3,6 @@ import { Button } from "react-bootstrap";
 import { format } from "date-fns";
 import ContentCard from "../ContentCard";
 import { offer_status } from "../../Constants and definitions/Enums";
-//import { OfferApplication } from "../OfferApplication";
 
 import "./OfferRecord.css";
 
@@ -12,7 +11,6 @@ import "./OfferRecord.css";
 // offerApply: handler to navigate to offerAccept popup
 
 export const OfferRecord = (props) => {
-  //const [applyPopup,setApplyPopup] = useState(false);
 
   const getBankLogo = () => {
     // TEMPORARY BMW LOGO -> implement getting bank icon url from offer obj
@@ -25,7 +23,6 @@ export const OfferRecord = (props) => {
   const applyClick = () => {
     // implement apply form for offer
     console.log("Apply clicked on:" + JSON.stringify(props.offerObj));
-    //setApplyPopup(true);
     props.offerApply(props.offerObj);
   };
 
@@ -41,22 +38,8 @@ export const OfferRecord = (props) => {
     console.log("details about applicant clicked");
   };
 
-  // const seeInquiryDetailsClick = () => {
-  //    // implement inquiry details popup
-  //   console.log("See Inquiry Details clicked on:" + JSON.stringify(props.offerObj));
-  // }
-
   return (
     <ContentCard className="offer-container">
-      {/* <div>
-          <strong>Offer</strong>
-          <p>{props.offerObj.id}</p>
-        </div> */}
-      {/* <div>
-          <strong>For inquiry</strong>
-          <br/>
-          <Button variant="primary" size="sm" onClick={seeInquiryDetailsClick}>See Inquiry Details</Button>
-        </div> */}
       <div>
         <strong>Created on:</strong>
         <p>{format(new Date(props.offerObj.creationDate), "dd/MM/yyyy")}</p>
@@ -146,8 +129,6 @@ export const OfferRecord = (props) => {
           Apply
         </Button>
       )}
-
-      {/* {applyPopup && <OfferApplication offerObj={props.offerObj}/>} */}
     </ContentCard>
   );
 };
