@@ -1,34 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { OfferRecord } from "../Record Components/OfferRecord";
 import { OfferFilterComponent } from "./OfferFIlterComponent";
+import Spinner from "react-bootstrap/Spinner";
 import Accordion from "react-bootstrap/Accordion";
 import ContentCard from "../ContentCard";
 import { Pagination } from "react-bootstrap";
 import { exampleOffers } from "../../Constants and definitions/ExampleData";
 
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 import "./Table.css";
+import { useAuth } from "../../Hooks/AuthProvider";
 
 const OffersTable = (props) => {
   const [offData,setOffData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [activePage, setActivePage] = useState(1);
   const [pages, setPages] = useState([1]);
+  const [waitingForData, setWaitingForData] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
 
-  const user = location.state; // to trzeba zmienić na handler do zdobycia danych
-  // console.log(" [R] USER INSIDE TABLE");
-  // console.log(user);
-  // console.log(" [R] OFF DATA");
-  // console.log(offData);
-  // console.log(" [R] FILTERED DATA");
-  // console.log(filteredData);
+  const {user} = useAuth();
 
   const pageSize = 10;
 
   const fetchOffers = async () => {
+
+    setWaitingForData(true);
     // const response = await axios.get("api_URL_HERE").catch(err => console.log(err));
 
     // if(response){
@@ -36,10 +34,12 @@ const OffersTable = (props) => {
     //   console.log("Fatched Inquiries: ",inqData);
     //   setInqData(inqData);
     // }
+
     if(props.refInq)
     {
       console.log("fetching offers which are result of inquiry to a table...");
       console.log(props.refInq);
+      setWaitingForData(false);
       setOffData(exampleOffers);
       setFilteredData(exampleOffers);
       updatePages(exampleOffers.length);
@@ -48,6 +48,7 @@ const OffersTable = (props) => {
     {
       console.log("fetching offers form given bank to a table...");
       console.log(props.refBank);
+      setWaitingForData(false);
       setOffData(exampleOffers);
       setFilteredData(exampleOffers);
       updatePages(exampleOffers.length);
@@ -55,6 +56,7 @@ const OffersTable = (props) => {
     else
     {
       console.log("fetching offers to a table...");
+      setWaitingForData(false);
       setOffData(exampleOffers);
       setFilteredData(exampleOffers);
       updatePages(exampleOffers.length);
@@ -134,11 +136,13 @@ const OffersTable = (props) => {
   };
 
   const offerApplyHandler = (offerObj) =>{
-    navigate(`/user/offers/apply`,{state: offerObj});
+    navigate(`/dashboard/user/offers/apply`,{state: offerObj});
   }
 
   useEffect(() => {
-    fetchOffers();
+    if(user){
+      fetchOffers();
+    }
   }, []);
 
   return (
@@ -154,7 +158,9 @@ const OffersTable = (props) => {
         </Accordion.Item>
       </Accordion>
       <br />
-      {filteredData.length > 0 ? (
+      { waitingForData ? <Spinner variant="primary" animation="broder"/>:
+      
+      filteredData.length > 0 ? (
         filteredData
           .slice((activePage - 1) * pageSize, activePage * pageSize)
           .map((offer) => <OfferRecord key={offer.id} offerObj={offer} offerApply={offerApplyHandler} bankPerspective={props.refBank}/>)

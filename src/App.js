@@ -2,40 +2,40 @@ import React from "react";
 import "./App.css";
 import LoginView from "./Views/LoginView/LoginView";
 import UserView from "./Views/UserView/UserView";
-// import RegistrationForm from './Components/RegistrarionForm';
-// import NewInquiryForm from './Components/NewInquiryForm';
 import InquiryBox from "./Components/InquiryBox";
 import { OfferApplication } from "./Components/OfferApplication";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import InquiriesTable from "./Components/Data Tables/InquiriesTable";
 import OffersTable from "./Components/Data Tables/OffersTable";
 import InquiryResults from "./Components/InquiryResults";
 
+import {ProtectedLayout} from "./Routing/ProtectedLayout";
+
 function App() {
   return (
     <div className="App">
-      {/* <LoginView></LoginView> */}
-      {/* <UserView></UserView> */}
-      {/* <RegistrationForm></RegistrationForm> */}
-      {/* <NewInquiryForm></NewInquiryForm> */}
-      {/* test commit comment*/}
+      <Routes>
+        <Route path="/" element={<LoginView />}>
+          <Route path="annonymousinquiry" element={<InquiryBox />} />
+        </Route>
 
-      <Router>
-        <Routes>
-          <Route path="/" element={<LoginView />}>
-            <Route path="annonymousinquiry" element={<InquiryBox />} />
-          </Route>
-          <Route path="/user" element={<UserView />}>
+        <Route path="dashboard" element={<ProtectedLayout />}>
+          <Route path="user" element={<UserView />}>
+            
             <Route path="newinquiry" element={<InquiryBox />} />
+            
             <Route path="offers" element={<OffersTable />}>
               <Route path="apply" element={<OfferApplication />} />
             </Route>
+            
             <Route path="inquiries" element={<InquiriesTable />}>
-              <Route path="results" element={<InquiryResults/>}/>
+              <Route path="results" element={<InquiryResults />} />
             </Route>
+          
           </Route>
-        </Routes>
-      </Router>
+        </Route>
+
+      </Routes>
     </div>
   );
 }

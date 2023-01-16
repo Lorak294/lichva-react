@@ -3,45 +3,52 @@ import axios from "axios";
 
 import { InquiryRecord } from "../Record Components/InquiryRecord";
 import { InquiryFilterComponent } from "./InquiryFIlterComponent";
+import Spinner from "react-bootstrap/Spinner";
 import Accordion from "react-bootstrap/Accordion";
 import ContentCard from "../ContentCard";
-import Pagination  from "react-bootstrap/Pagination";
-import { exampleInquiries } from "../../Constants and definitions/ExampleData";
+import Pagination from "react-bootstrap/Pagination";
 
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import "./Table.css";
 import { Outlet } from "react-router-dom";
+import { useAuth } from "../../Hooks/AuthProvider";
 
 const InquiriesTable = (props) => {
-  const [inqData,setInqData] = useState([]);
+  const [inqData, setInqData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [activePage, setActivePage] = useState(1);
   const [pages, setPages] = useState([1]);
+  const [waitingForData, setWaitingForData] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
 
-  const user = location.state; // to trzeba zmienić na handler do zdobycia danych
+  //const user = location.state; // to trzeba zmienić na handler do zdobycia danych
+  const { user } = useAuth();
 
   const pageSize = 10;
 
   const fetchInquiries = async () => {
-      
+    setWaitingForData(true);
     // TRZEBA ZMIENIĆ ŻEBY ŚCIĄGAŁO TYLKO INQ USERA A NA RAZIE BIERZE WSZYSTKIE
-    axios.get("https://lichvanotitia.azurewebsites.net/api/Inquiry").then((response) =>{
-      //console.log("inquireis have been fetched");
-      //console.log(response.data);
-      
-      setInqData(response.data);
-      setFilteredData(response.data);
-      updatePages(response.data.length);
-    })
-    .catch(err => console.log(err));
-    
+    await axios
+      .get("https://lichvanotitia.azurewebsites.net/api/Inquiry")
+      .then((response) => {
+        //console.log("inquireis have been fetched");
+        //console.log(response.data);
+        setWaitingForData(false);
+        setInqData(response.data);
+        setFilteredData(response.data);
+        updatePages(response.data.length);
+      })
+      .catch((err) => {
+        setWaitingForData(false);
+        console.log(err);
+      });
+
     // setInqData(exampleInquiries);
     // setFilteredData(exampleInquiries);
     // updatePages(exampleInquiries.length);
-  }
+  };
 
   const applyFiltersHandler = (filterConditions) => {
     // console.log("FILTER CONDITIONS: ");
@@ -110,22 +117,18 @@ const InquiriesTable = (props) => {
   const inqResultsHandler = (inqObj) => {
     //console.log("INQ OBJ INSIDE HANDLER:");
     //console.log(inqObj);
-    navigate(`/user/inquiries/results`,{state: inqObj});
-  }
+    navigate(`/dashboard/user/inquiries/results`, { state: inqObj });
+  };
 
   useEffect(() => {
-    if(user)
-    {
+    if (user) {
       fetchInquiries();
-    }
-    else
-    {
-      navigate('/user')
     }
   }, []);
 
   return (
     <ContentCard className="table-container">
+      <Outlet />
       <Accordion>
         <Accordion.Item eventKey="0">
           <Accordion.Header>Filtering and Sorting</Accordion.Header>
@@ -134,12 +137,19 @@ const InquiriesTable = (props) => {
           </Accordion.Body>
         </Accordion.Item>
       </Accordion>
-      <Outlet/>
       <br />
-      {filteredData.length > 0 ? (
+      {waitingForData ? (
+        <Spinner variant="primary" animation="broder" />
+      ) : filteredData.length > 0 ? (
         filteredData
           .slice((activePage - 1) * pageSize, activePage * pageSize)
-          .map((inquiry) => <InquiryRecord key={inquiry.id} inqObj={inquiry} resultsHandler={inqResultsHandler}/>)
+          .map((inquiry) => (
+            <InquiryRecord
+              key={inquiry.id}
+              inqObj={inquiry}
+              resultsHandler={inqResultsHandler}
+            />
+          ))
       ) : (
         <p>No records meet the filter requirements.</p>
       )}

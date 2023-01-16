@@ -4,12 +4,13 @@ import "./TopMenu.css";
 import IconButton from "./IconButton";
 import { FiLogOut } from "react-icons/fi";
 import { CgProfile } from "react-icons/cg";
+import { useAuth } from "../Hooks/AuthProvider";
 
 // PROPS TO PASS:
-//  - user:             user object
-//  - onLogoutclick:    hander for clicking the Logout button
 
 const TopMenu = (props) => {
+  const { user, logout } = useAuth();
+
   return (
     <div className="top-menu-bar">
       <span className="profile-span">
@@ -17,20 +18,11 @@ const TopMenu = (props) => {
           <CgProfile size={30} />
         </span>
         <span className="profile-span-username">
-          {`${props.user.first_name} ${props.user.last_name}` || "Example User"}
+          {user.name}
         </span>
       </span>
       <span className="logout-button-span">
-        <IconButton
-          icon={<FiLogOut />}
-          variant="primary"
-          onClick={
-            props.onLogoutClick ||
-            (() => {
-              console.log("[E] logout clicked");
-            })
-          }
-        >
+        <IconButton icon={<FiLogOut />} variant="primary" onClick={logout}>
           Logout
         </IconButton>
       </span>
