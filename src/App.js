@@ -8,6 +8,7 @@ import { Routes, Route } from "react-router-dom";
 import InquiriesTable from "./Components/Data Tables/InquiriesTable";
 import OffersTable from "./Components/Data Tables/OffersTable";
 import InquiryResults from "./Components/InquiryResults";
+import RegistrationForm from "./Components/RegistrarionForm";
 
 import {ProtectedLayout} from "./Routing/ProtectedLayout";
 
@@ -20,6 +21,7 @@ function App() {
         </Route>
 
         <Route path="dashboard" element={<ProtectedLayout />}>
+          <Route path="registration" element={<RegistrationForm/>}/>
           <Route path="user" element={<UserView />}>
             
             <Route path="newinquiry" element={<InquiryBox />} />

@@ -12,7 +12,12 @@ export const AuthProvider = ({ children }) => {
   const login = async (data) => {
     setUser(data);
     console.log("navigating to userPage!");
-    navigate("/dashboard/user");
+    // if(data. HAS FILLED INFO){
+    //   navigate("/dashboard/user");
+    // }else{
+    //   navigate("/dashboard/registration");
+    // }
+    navigate("/dashboard/registration");
   };
 
   // LOGOUT HANDLER

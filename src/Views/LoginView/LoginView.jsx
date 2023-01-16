@@ -111,11 +111,7 @@ const LoginView = () => {
           )}
         />
         <hr />
-        <p>Don't have an account?</p>
-        <Button variant="primary mb-3" size="lg" onClick={registerNowHandler}>
-          Register Now
-        </Button>
-        <p>or</p>
+        <p>Don't have a google account?</p>
         <Button variant="primary" size="lg" onClick={annEnqHandler}>
           Create an annonymous inquiry
         </Button>
