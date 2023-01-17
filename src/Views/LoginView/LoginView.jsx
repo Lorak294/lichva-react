@@ -33,7 +33,7 @@ const LoginView = () => {
   // GOOGLE LOGIN - to clean up later now i want it separate
   // const [profile,setProfile] = useState([]);
   //const clientId = "625318245450-ac4a4f3rldhgcb2fp1tsg1o8k5fiumc2.apps.googleusercontent.com";
-  const clientId = "975889795934-pj5d6q9u6lbsromrskuvn9e1s9dphieq.apps.googleusercontent.com";
+  const clientId = "975889795934-d16i8h32h946jtboaqn9fcqntteleqgo.apps.googleusercontent.com";
 
    const onLoginSuccess = (googleRes) => {
      console.log("login success:", googleRes);
