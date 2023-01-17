@@ -26,12 +26,12 @@ const CommonUserPannel = (props) => {
       navigate(`/dashboard/user/inquiries`);
     }
 
-    const {user} = useAuth();
+    const {token, user} = useAuth();
 
     return(
       <div>
         <div className="welcome-banner">
-        <h1>Welcome {user.givenName}!</h1>
+        <h1>Welcome {user.firstName}!</h1>
         <p>Looking for a new loan?</p>
         <IconButton icon={<BiPlus size="25"/>} variant="primary" size="lg" className="new-inq-btn" onClick={newInqHandler}>
           Create new inquiry

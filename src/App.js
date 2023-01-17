@@ -22,8 +22,8 @@ function App() {
 
         <Route path="dashboard" element={<ProtectedLayout />}>
           <Route path="registration" element={<RegistrationForm/>}/>
-          <Route path="user" element={<UserView />}>
-            
+          
+          <Route path="user" element={<UserView />}>         
             <Route path="newinquiry" element={<InquiryBox />} />
             
             <Route path="offers" element={<OffersTable />}>

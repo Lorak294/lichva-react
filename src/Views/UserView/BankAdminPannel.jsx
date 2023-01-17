@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import ContentCard from "../../Components/ContentCard";
 import OffersTable from "../../Components/Data Tables/OffersTable";
+import { useAuth } from "../../Hooks/AuthProvider";
 
 import "./BankAdminPannel.css";
 
@@ -30,6 +31,7 @@ const tmpOffersData = [
 
 const BankAdminPannel = (props) => {
   const [offers, setOffers] = useState([]);
+  const {user} = useAuth(); 
 
   const getOffers = () => {
     console.log("getting offers");
@@ -46,7 +48,7 @@ const BankAdminPannel = (props) => {
   return (
     <div>
       <div className="welcome-banner">
-        <h1>Welcome {props.user.first_name}!</h1>
+        <h1>Welcome {user.givenName}!</h1>
         </div>
         <ContentCard className="offer-section">
           <h3>Offers made by your Bank:</h3>

@@ -32,6 +32,7 @@ const UserView = (props) => {
     // }
 
     return <CommonUserPannel/>;
+    //return <BankAdminPannel/>;
   }
 
   return (

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 
 import ContentCard from "./ContentCard";
 import Form from "react-bootstrap/Form";
@@ -11,18 +11,68 @@ import { job_categories, id_types } from "../Constants and definitions/Enums";
 
 import "./RegistrarionForm.css";
 import { useNavigate } from "react-router";
+import axios from "axios";
 //import { useEffect } from "react";
 
 const RegistrationForm = () => {
   const [validated, setValidated] = useState(false);
   const [selectedGovId,setSelectedGovId] = useState("");
+  const [idTypes,setIdTypes] = useState([]);
+  const [jobTypes,setJobTypes] = useState([]);
 
-  const {user, logout} = useAuth();
+  const {token, user, logout,login} = useAuth();
   const navigate = useNavigate();
 
 
+  const fetchJobTypes = async () =>{
+    try{
+
+    
+    const response = await axios.get("https://lichvanotitia.azurewebsites.net/api/dictionary/jobs");
+    setJobTypes(response.data);
+    }
+    catch(err)
+    {
+      console.log(err);
+    }
+  }
+
+  const fetchIdTypes = async () =>{
+    await axios
+    .get("https://lichvanotitia.azurewebsites.net/api/dictionary/idTypes")
+    .then((response) => {
+      //console.log("inquireis have been fetched");
+      //console.log(response.data);
+      //setWaitingForData(false);
+      setIdTypes(response.data);
+    })
+    .catch((err) => {
+      //setWaitingForData(false);
+      console.log(err);
+    });
+  }
+
+  const sendUpdatedUser = async (updatedUser) => {
+    try{
+      // const config = {
+      //   headers:{
+      //     Authorization : `Bearer ${token}`
+      //   }
+      // };
+      // const response = await axios.put("https://lichvanotitia.azurewebsites.net/api/User",updatedUser,config);
+      const response = await axios.put("https://lichvanotitia.azurewebsites.net/api/User",updatedUser);
+      login({token: token, user: updatedUser});
+      }
+      catch(err)
+      {
+        console.log(err);
+      }
+  }
+
   const handleSubmit = (event) => {
     const form = event.target;
+
+    console.log("FORM OBJECT", form);
     event.preventDefault();
     if (form.checkValidity() === false) {
       //event.preventDefault();
@@ -30,8 +80,20 @@ const RegistrationForm = () => {
       setValidated(true);
     } else {
       setValidated(true);
-      // API CALL HERE -> sending form information to back
-      navigate('/dashboard/user');
+      let updatedUser = {
+        ...user,
+        hash: form.formEmail.value,
+        firstName: form.formName.value,
+        lastName: form.formSurname.value,
+        jobType: form.formJobType.value,
+        idType: selectedGovId,
+        idNumber: form.formIdValue.value,
+        incomeLevel: 123,
+        role: 'user',
+        active: true,
+      };
+      console.log('UPDATED USER', updatedUser);
+      sendUpdatedUser(updatedUser);
     }
   };
 
@@ -56,13 +118,13 @@ const RegistrationForm = () => {
     return s;
   };
 
-  // useEffect(() => {
-  //   if(USER MA WYPEŁNIONE DANE){
-  //     navigate('dashboard/user');
-  //   }
-  // })
+   useEffect(() => {
+       console.log("fetching enums...")
+       fetchIdTypes();
+       fetchJobTypes();
+    },[]);
 
-
+  console.log("rendering form");
 
   return (
     <ContentCard className="form-container">
@@ -71,7 +133,7 @@ const RegistrationForm = () => {
         <br/>
         <p>Because this is Your first sign-in, in order to proceed You have to provide more information.</p>
 
-        <Form.Group className="mb-3" controlId="formEmailFloat">
+        <Form.Group className="mb-3" controlId="formEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control required disabled type="email" placeholder="Enter email" value={user.email}/>
           <Form.Control.Feedback type="invalid">Provide a valid email.</Form.Control.Feedback>
@@ -82,7 +144,7 @@ const RegistrationForm = () => {
           <Col>
             <Form.Group className="mb-3" controlId="formName">
               <Form.Label>Name</Form.Label>
-              <Form.Control required type="text" placeholder="Enter Name" value={user.givenName}/>
+              <Form.Control required type="text" placeholder="Enter Name" defaultValue={user.firstName}/>
               <Form.Control.Feedback type="invalid">Provide a Name</Form.Control.Feedback>
             </Form.Group>
           </Col>
@@ -90,7 +152,7 @@ const RegistrationForm = () => {
           <Col>
             <Form.Group className="mb-3" controlId="formSurname">
               <Form.Label>Surname</Form.Label>
-              <Form.Control required type="text" placeholder="Enter Surame"  value={user.familyName}/>
+              <Form.Control required type="text" placeholder="Enter Surame"  defaultValue={user.lastName}/>
               <Form.Control.Feedback type="invalid">Provide a Surname</Form.Control.Feedback>
             </Form.Group>
           </Col>
@@ -104,8 +166,8 @@ const RegistrationForm = () => {
               defaultValue={""}
             >
               <option value="" hidden={true}></option>
-              {Object.keys(job_categories).map((job_type, index) => (
-                <option key={index} value={index + 1}>
+              {jobTypes.map((job_type, index) => (
+                <option key={index} value={job_type}>
                   {stingifyField(job_type)}
                 </option>
               ))}
@@ -117,7 +179,7 @@ const RegistrationForm = () => {
 
           <Row className="mb-3">
             <Col sm={5}>
-              <Form.Group className="mb-3" controlId="formGovIdType">
+              <Form.Group className="mb-3" controlId="formIdType">
                 <Form.Label>Gov ID Type</Form.Label>
                 <Form.Select
                   required
@@ -126,8 +188,8 @@ const RegistrationForm = () => {
                   defaultValue={""}
                 >
                   <option value="" hidden={true}></option>
-                  {Object.keys(id_types).map((id_type, index) => (
-                    <option key={index} value={index + 1}>
+                  {idTypes.map((id_type, index) => (
+                    <option key={index} value={id_type}>
                       {stingifyField(id_type)}
                     </option>
                   ))}
@@ -138,7 +200,7 @@ const RegistrationForm = () => {
               </Form.Group>
             </Col>
             <Col>
-              <Form.Group className="mb-3" controlId="formGovIdValue">
+              <Form.Group className="mb-3" controlId="formIdValue">
                 <Form.Label>Gov ID</Form.Label>
                 <Form.Control
                   required

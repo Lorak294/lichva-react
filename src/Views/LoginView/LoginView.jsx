@@ -24,46 +24,30 @@ const LoginView = () => {
     ultricies a augue vel, sodales imperdiet risus. Duis aliquet nisi
     enim, sed tempus magna congue non. Mauris tincidunt euismod magna
     vel euismod.`;
-  const {user,login} = useAuth();
+  const {token,user,login} = useAuth();
   
   const annEnqHandler = () => {
     navigate("/annonymousinquiry");
   };
 
-  const registerNowHandler = () => {
-    // EXAMPLE API CALL - to delete later
-    // let inquiry = {
-    //   userId: 2137,
-    //   ammount: 42000,
-    //   installments: 69,
-    // };
-    // const headers = {
-    //   "Content-Type": "text/json",
-    //   accept: "text/plain",
-    // };
-
-    // axios
-    //   .post("https://lichvanotitia.azurewebsites.net/api/Inquire", inquiry, {
-    //     headers: headers,
-    //   })
-    //   .then((res) => {
-    //     console.log("PUT RESPONSE:");
-    //     console.log(res);
-    //   });
-  };
-
   // GOOGLE LOGIN - to clean up later now i want it separate
   // const [profile,setProfile] = useState([]);
-  const clientId = "625318245450-ac4a4f3rldhgcb2fp1tsg1o8k5fiumc2.apps.googleusercontent.com";
+  //const clientId = "625318245450-ac4a4f3rldhgcb2fp1tsg1o8k5fiumc2.apps.googleusercontent.com";
+  const clientId = "975889795934-pj5d6q9u6lbsromrskuvn9e1s9dphieq.apps.googleusercontent.com";
 
-   const onLoginSuccess = (res) => {
-     console.log("login success:", res);
-     refreshTokenSetup(res);
-     
+   const onLoginSuccess = (googleRes) => {
+     console.log("login success:", googleRes);
+     refreshTokenSetup(googleRes);
+     console.log(googleRes);
      
      // TO DO: GET FULL USER DATA OBJECT AND INSERT IT HERE INSTEAD OF "res.profileObj".
-     console.log(res);
-     login(res.profileObj);
+     axios.post("https://lichvanotitia.azurewebsites.net/api/auth/google", { tokenId: googleRes.tokenId}).then((response) => {
+        console.log(response);
+        login({token: response.data.token, user: response.data.user});
+     }).catch(function (error) {
+      console.log(error);
+    });
+
    };
    const onLoginFailure = (err) => {
      console.log("login failed:", err);
@@ -80,7 +64,7 @@ const LoginView = () => {
      gapi.load("client:auth2", initClient);
    });
 
-   if(user){
+   if(user || token){
     return <Navigate to="/dashboard/user"/>;
    }
 
