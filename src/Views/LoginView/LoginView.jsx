@@ -4,7 +4,7 @@ import axios from "axios";
 import "./LoginView.css";
 import logo from "../../logoLichva.png";
 
-import {FcGoogle} from 'react-icons/fc';
+import { FcGoogle } from "react-icons/fc";
 import ContentCard from "../../Components/ContentCard";
 import Button from "react-bootstrap/Button";
 import IconButton from "../../Components/IconButton";
@@ -12,20 +12,24 @@ import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { GoogleLogin } from "react-google-login";
 import { gapi } from "gapi-script";
 
-import {useAuth} from "../../Hooks/AuthProvider";
-import {refreshTokenSetup} from "../../Hooks/refreshTokenSetup";
+import { useAuth } from "../../Hooks/AuthProvider";
+import { refreshTokenSetup } from "../../Hooks/refreshTokenSetup";
+import { useState } from "react";
+import { Spinner } from "react-bootstrap";
+
+const adText = ` Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dui
+imperdiet sem et lectus tempus luctus. Nulla facilisi. Aliquam
+erat volutpat. Phasellus in quam in quam sodales euismod. Aenean
+euismod hendrerit arcu, lacinia consequat elit. Cras mi leo,
+ultricies a augue vel, sodales imperdiet risus. Duis aliquet nisi
+enim, sed tempus magna congue non. Mauris tincidunt euismod magna
+vel euismod.`;
 
 const LoginView = () => {
   const navigate = useNavigate();
-  const adText = ` Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dui
-    imperdiet sem et lectus tempus luctus. Nulla facilisi. Aliquam
-    erat volutpat. Phasellus in quam in quam sodales euismod. Aenean
-    euismod hendrerit arcu, lacinia consequat elit. Cras mi leo,
-    ultricies a augue vel, sodales imperdiet risus. Duis aliquet nisi
-    enim, sed tempus magna congue non. Mauris tincidunt euismod magna
-    vel euismod.`;
-  const {token,user,login} = useAuth();
-  
+  const { token, user, login } = useAuth();
+  const [waitingForLogin, setWaitingForLogin] = useState(false);
+
   const annEnqHandler = () => {
     navigate("/annonymousinquiry");
   };
@@ -35,38 +39,45 @@ const LoginView = () => {
   //const clientId = "625318245450-ac4a4f3rldhgcb2fp1tsg1o8k5fiumc2.apps.googleusercontent.com";
   const clientId = "975889795934-d16i8h32h946jtboaqn9fcqntteleqgo.apps.googleusercontent.com";
 
-   const onLoginSuccess = (googleRes) => {
-     console.log("login success:", googleRes);
-     refreshTokenSetup(googleRes);
-     console.log(googleRes);
-     
-     // TO DO: GET FULL USER DATA OBJECT AND INSERT IT HERE INSTEAD OF "res.profileObj".
-     axios.post("https://lichvanotitia.azurewebsites.net/api/auth/google", { tokenId: googleRes.tokenId}).then((response) => {
+  const onLoginSuccess = (googleRes) => {
+    setWaitingForLogin(true);
+    console.log("login success:", googleRes);
+    refreshTokenSetup(googleRes);
+    console.log(googleRes);
+
+    // TO DO: GET FULL USER DATA OBJECT AND INSERT IT HERE INSTEAD OF "res.profileObj".
+    axios
+      .post("https://lichvanotitia.azurewebsites.net/api/auth/google", {
+        tokenId: googleRes.tokenId,
+      })
+      .then((response) => {
         console.log(response);
-        login({token: response.data.token, user: response.data.user});
-     }).catch(function (error) {
-      console.log(error);
-    });
+        setWaitingForLogin(false);
+        login(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+        setWaitingForLogin(false);
+      });
+  };
+  const onLoginFailure = (err) => {
+    console.log("login failed:", err);
+    // TO DO: DISPALY ERROR MESSAGE
+  };
 
-   };
-   const onLoginFailure = (err) => {
-     console.log("login failed:", err);
-     // TO DO: DISPALY ERROR MESSAGE
-   };
+  useEffect(() => {
+    const initClient = () => {
+      gapi.client.init({
+        clientId: clientId,
+        scope: "",
+      });
+    };
+    gapi.load("client:auth2", initClient);
+  });
 
-   useEffect(() => {
-     const initClient = () => {
-       gapi.client.init({
-         clientId: clientId,
-         scope: "",
-       });
-     };
-     gapi.load("client:auth2", initClient);
-   });
-
-   if(user || token){
-    return <Navigate to="/dashboard/user"/>;
-   }
+  if (user || token) {
+    return <Navigate to="/dashboard/user" />;
+  }
 
   return (
     <div>
@@ -90,8 +101,20 @@ const LoginView = () => {
           onFailure={onLoginFailure}
           cookiePolicy={"single_host_origin"}
           isSignedIn={user}
-          render={ renderProps => (
-            <IconButton variant='light' size="lg" icon ={<FcGoogle/>} onClick={renderProps.onClick} disabled={renderProps.disabled}>Sign in with Google</IconButton>
+          render={(renderProps) => (
+            <IconButton
+              variant="light"
+              size="lg"
+              icon={<FcGoogle />}
+              onClick={renderProps.onClick}
+              disabled={renderProps.disabled}
+            >
+              {waitingForLogin ? (
+                <Spinner animation="border" variant="primary" />
+              ) : (
+                "Sign in with Google"
+              )}{" "}
+            </IconButton>
           )}
         />
         <hr />

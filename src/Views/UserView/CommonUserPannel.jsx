@@ -11,7 +11,7 @@ import {useAuth} from "../../Hooks/AuthProvider";
 // PROPS TO PASS:
 //  - user:             user object
 
-const CommonUserPannel = (props) => {
+const CommonUserPannel = () => {
     const navigate = useNavigate();
 
     const newInqHandler = () =>{
@@ -26,12 +26,12 @@ const CommonUserPannel = (props) => {
       navigate(`/dashboard/user/inquiries`);
     }
 
-    const {token, user} = useAuth();
+    const {user} = useAuth();
 
     return(
       <div>
         <div className="welcome-banner">
-        <h1>Welcome {user.firstName}!</h1>
+        <h1>Welcome {user.data.firstName}!</h1>
         <p>Looking for a new loan?</p>
         <IconButton icon={<BiPlus size="25"/>} variant="primary" size="lg" className="new-inq-btn" onClick={newInqHandler}>
           Create new inquiry

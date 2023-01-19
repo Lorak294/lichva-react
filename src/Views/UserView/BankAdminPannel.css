@@ -1,28 +1,21 @@
-.offer-section{
-    width: 90%;
-}
-
-
-
-.content-card h3{
-    margin: 20px;
-}
-
 .btn{
     margin:5px;
-}
-
-.table{
-    text-align: center !important;
-    vertical-align: middle !important;
 }
 
 .welcome-banner{
     text-align: center;
     color: white;
-    padding-top: 40px;
+    margin: 40px;
 }
 
-.welcome-banner h1{
-    margin-bottom: 80px;
+.lists-buttons{
+    margin-top: 30px;
+    display: inline-grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 30px;
+}
+
+.lists-buttons button{
+    padding: 20px;
+    margin: 20px;
 }

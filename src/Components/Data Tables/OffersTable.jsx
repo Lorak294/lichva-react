@@ -11,59 +11,79 @@ import { Outlet, useNavigate } from "react-router-dom";
 
 import "./Table.css";
 import { useAuth } from "../../Hooks/AuthProvider";
+import axios from "axios";
 
 const OffersTable = (props) => {
-  const [offData,setOffData] = useState([]);
+  const [offData, setOffData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [activePage, setActivePage] = useState(1);
   const [pages, setPages] = useState([1]);
   const [waitingForData, setWaitingForData] = useState(false);
+  const [offerStatuses, setOfferStatuses] = useState([]);
+  const [banks, setBanks] = useState([]);
   const navigate = useNavigate();
 
-  const {user} = useAuth();
+  const { user } = useAuth();
 
   const pageSize = 10;
 
-  const fetchOffers = async () => {
-
-    setWaitingForData(true);
-    // const response = await axios.get("api_URL_HERE").catch(err => console.log(err));
-
-    // if(response){
-    //   const inqData = response.data;
-    //   console.log("Fatched Inquiries: ",inqData);
-    //   setInqData(inqData);
-    // }
-
-    if(props.refInq)
-    {
-      console.log("fetching offers which are result of inquiry to a table...");
-      console.log(props.refInq);
-      setWaitingForData(false);
-      setOffData(exampleOffers);
-      setFilteredData(exampleOffers);
-      updatePages(exampleOffers.length);
-    }
-    else if(props.refBank)
-    {
-      console.log("fetching offers form given bank to a table...");
-      console.log(props.refBank);
-      setWaitingForData(false);
-      setOffData(exampleOffers);
-      setFilteredData(exampleOffers);
-      updatePages(exampleOffers.length);
-    }
-    else
-    {
-      console.log("fetching offers to a table...");
-      setWaitingForData(false);
-      setOffData(exampleOffers);
-      setFilteredData(exampleOffers);
-      updatePages(exampleOffers.length);
-    }
+  const fetchOfferStatuses = async () => {
+    axios.get('https://lichvanotitia.azurewebsites.net/api/dictionary/offerStatus').then(response => {
+      console.log("fetched statuses",response.data);
+      setOfferStatuses(response.data);
+    }).catch(err => console.log(err));
   }
 
+  const fetchBanks = async () => {
+    axios.get('https://lichvanotitia.azurewebsites.net/api/Bank').then(response => {
+      console.log(response.data);
+      setBanks("fetched banks",response.data);
+    }).catch(err => console.log(err));
+  }
 
+  const fetchOffers = async () => {
+    setWaitingForData(true);
+    // const response = await axios.get("api_URL_HERE").catch(err => console.log(err));
+    if (props.refInq) {
+      console.log("SIMUALTING GETTING INQUIRY OFFERS FOR INQ:", props.refInq);
+    } else {
+      switch (user.data.roleId) {
+        case 1:
+          // get inq 
+          console.log("GETTING USER OFFERS");
+          axios
+            .get("https://lichvanotitia.azurewebsites.net/api/Offer")
+            .then((response) => {
+              console.log(response);
+              setWaitingForData(false);
+              setOffData(response.data);
+              setFilteredData(response.data);
+              updatePages(response.data.length);
+            })
+            .catch((err) => {
+              console.log(err);
+              setWaitingForData(false);
+            });
+          break;
+        case 3:
+          console.log("GETTING BANK OFFERS");
+          axios
+          .get("https://lichvanotitia.azurewebsites.net/api/Offer")
+          .then((response) => {
+            console.log(response);
+            setWaitingForData(false);
+            setOffData(response.data);
+            setFilteredData(response.data);
+            updatePages(response.data.length);
+          })
+          .catch((err) => {
+            console.log(err);
+            setWaitingForData(false);
+          });
+          break;
+      }
+    }
+  };
 
   const applyFiltersHandler = (filterConditions) => {
     // console.log("FILTER CONDITIONS: ");
@@ -92,8 +112,8 @@ const OffersTable = (props) => {
             filterConditions.banks === "" ||
             filterConditions.banks.includes(offer.bankId)) &&
           (filterConditions.status.length === 0 ||
-              filterConditions.status === "" ||
-              filterConditions.status.includes(offer.offerStatus))
+            filterConditions.status === "" ||
+            filterConditions.status.includes(offer.offerStatus))
       )
       .sort((a, b) => {
         let res;
@@ -135,14 +155,14 @@ const OffersTable = (props) => {
     if (activePage < pages.length) setActivePage(activePage + 1);
   };
 
-  const offerApplyHandler = (offerObj) =>{
-    navigate(`/dashboard/user/offers/apply`,{state: offerObj});
-  }
+  const offerApplyHandler = (offerObj) => {
+    navigate(`/dashboard/user/offers/apply`, { state: offerObj });
+  };
 
   useEffect(() => {
-    if(user){
-      fetchOffers();
-    }
+    fetchOfferStatuses();
+    fetchBanks();
+    fetchOffers();
   }, []);
 
   return (
@@ -158,12 +178,20 @@ const OffersTable = (props) => {
         </Accordion.Item>
       </Accordion>
       <br />
-      { waitingForData ? <Spinner variant="primary" animation="broder"/>:
-      
-      filteredData.length > 0 ? (
+      {waitingForData ? (
+        <Spinner variant="primary" animation="border" />
+      ) : filteredData.length > 0 ? (
         filteredData
           .slice((activePage - 1) * pageSize, activePage * pageSize)
-          .map((offer) => <OfferRecord key={offer.id} offerObj={offer} offerApply={offerApplyHandler} bankPerspective={props.refBank}/>)
+          .map((offer) => (
+            <OfferRecord
+              key={offer.id}
+              offerObj={offer}
+              offerApply={offerApplyHandler}
+              offerStatuses={offerStatuses}
+              banks={banks}
+            />
+          ))
       ) : (
         <p>No records meet the filter requirements.</p>
       )}
@@ -183,7 +211,7 @@ const OffersTable = (props) => {
           <Pagination.Next onClick={nextPage} />
         </Pagination>
       </div>
-      <Outlet/>
+      <Outlet />
     </ContentCard>
   );
 };

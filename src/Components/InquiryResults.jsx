@@ -16,15 +16,14 @@ const InquiryResults = (props) => {
     const location = useLocation();
 
     const inqObj = location.state;
-    console.log("RECEIVED INQ OBJ:");
-    console.log(location);
+    console.log("RECEIVED INQ OBJ:", inqObj? inqObj: props.inqObj);
 
     const closeHandler = () =>{
         navigate(-1);
     }
 
     useEffect(() => {
-      if(!inqObj){
+      if(!inqObj && !props.inqObj){
         console.log("no inqObj passed -> redirecting to user");
         navigate("dashboard/user");
       }
@@ -36,7 +35,7 @@ const InquiryResults = (props) => {
         <Button className="close-button" variant="danger" size="lg" onClick={closeHandler}>Close</Button>
         <h4 className="text-white">Your inquiry results</h4>
         <div>
-            <OffersTable refInq={inqObj}></OffersTable>
+            <OffersTable refInq={inqObj?inqObj:props.inqObj}></OffersTable>
         </div>
       </ContentCard>
     </Popup>

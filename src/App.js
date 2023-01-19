@@ -11,7 +11,8 @@ import InquiryResults from "./Components/InquiryResults";
 import RegistrationForm from "./Components/RegistrarionForm";
 
 import {ProtectedLayout} from "./Routing/ProtectedLayout";
-
+import BankAdminPannel from "./Views/UserView/BankAdminPannel";
+import { AnnInqResult } from "./Components/AnnInqResult";
 function App() {
   return (
     <div className="App">
@@ -19,6 +20,8 @@ function App() {
         <Route path="/" element={<LoginView />}>
           <Route path="annonymousinquiry" element={<InquiryBox />} />
         </Route>
+
+        <Route path="/anninquiryresult:inqId" element={<AnnInqResult/>}/>
 
         <Route path="dashboard" element={<ProtectedLayout />}>
           <Route path="registration" element={<RegistrationForm/>}/>

@@ -5,21 +5,17 @@ import ContentCard from "../ContentCard";
 import { offer_status } from "../../Constants and definitions/Enums";
 
 import "./OfferRecord.css";
+import { useAuth } from "../../Hooks/AuthProvider";
 
 // PROPS:
 // offerObj: object with ofer data
 // offerApply: handler to navigate to offerAccept popup
+// offerStatuses
 
 export const OfferRecord = (props) => {
+  const { user } = useAuth();
 
-  const getBankLogo = () => {
-    // TEMPORARY BMW LOGO -> implement getting bank icon url from offer obj
-
-    // NOTE: Sorting is by bankID anyway so maybe write a function to get bank name and icon from id
-
-    return "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/BMW_logo_%28gray%29.svg/2048px-BMW_logo_%28gray%29.svg.png";
-  };
-
+  const bankPerspective = user && user.data.roleId == 3;
   const applyClick = () => {
     // implement apply form for offer
     console.log("Apply clicked on:" + JSON.stringify(props.offerObj));
@@ -38,28 +34,32 @@ export const OfferRecord = (props) => {
     console.log("details about applicant clicked");
   };
 
+  const getBankName = () => {
+    return (props.bank && props.banks.find((bank) => bank.id == props.offerObj.bankId).name);
+  }
+
+
   return (
     <ContentCard className="offer-container">
       <div>
         <strong>Created on:</strong>
-        <p>{format(new Date(props.offerObj.creationDate), "dd/MM/yyyy")}</p>
+        <p>{format(new Date(props.offerObj.createDate), "dd/MM/yyyy")}</p>
       </div>
-      {props.bankPerspective && (
+      {bankPerspective && (
         <div>
           <strong>Applicant:</strong>
-          <br/>
-          <Button size="sm" variant="primary" onClick={applicantDetailHandler}>See applicant details</Button>
+          <br />
+          <Button size="sm" variant="primary" onClick={applicantDetailHandler}>
+            See applicant details
+          </Button>
         </div>
       )}
       <div>
         <strong>Bank:</strong>
-        <div className="bank-container">
-          <p>Bank name</p>
-          <img className="bank-logo" src={getBankLogo()} alt="logo" />
-        </div>
+        <p>{getBankName()}</p>
       </div>
       <div>
-        <strong>Ammount:</strong>
+        <strong>Requested value:</strong>
         <p>{props.offerObj.ammount}</p>
       </div>
       <div>
@@ -67,43 +67,67 @@ export const OfferRecord = (props) => {
         <p>{props.offerObj.installments}</p>
       </div>
       <div>
-        <strong>Contract:</strong>
+        <strong>Percentage:</strong>
+        <p>{props.offerObj.percentage}</p>
+      </div>
+      <div>
+        <strong>Monthly Installment:</strong>
+        <p>{props.offerObj.monthlyInstallment}</p>
+      </div>
+      <div>
+        <strong>Generated Contract:</strong>
         <p>
-          <a
-            href={props.offerObj.generatedContract}
-            target="_blank"
-            rel="noreferrer"
-          >
-            PDF
-          </a>
+            <a
+              href='https://lichvablob.blob.core.windows.net/lichvapdf/umowa_blank.pdf'
+              target="_blank"
+              rel="noreferrer"
+            >
+              PDF
+            </a>
+        </p>
+      </div>
+      <div>
+        <strong>Signed Contract:</strong>
+        <p>
+          {!props.offerObj.documentLink ? (
+            <p>No file</p>
+          ) : (
+            <a
+              href={props.offerObj.documentLink}
+              target="_blank"
+              rel="noreferrer"
+            >
+              PDF
+            </a>
+          )}
         </p>
       </div>
       <div>
         <strong>Status:</strong>
 
-        {props.offerObj.offerStatus === offer_status.offered && (
+        {props.offerObj.statusDescription === 'offered' && (
           <p className="status-text bg-primary">Offered</p>
         )}
-        {props.offerObj.offerStatus === offer_status.waiting_for_acceptance && (
+        {props.offerObj.statusDescription === 'waiting_for_acceptance' && (
           <p className="status-text bg-warning">
             Waiting for
             <br />
             acceptance
           </p>
         )}
-        {props.offerObj.offerStatus === offer_status.accepted && (
+        {props.offerObj.statusDescription === 'accepted' && (
           <p className="status-text bg-success">Accepted</p>
         )}
-        {props.offerObj.offerStatus === offer_status.declined && (
+        {props.offerObj.statusDescription === 'declined' && (
           <p className="status-text bg-danger">Declined</p>
         )}
       </div>
-      {props.bankPerspective ? (
+      {user.data.roleId === 3 ? (
         <div>
           <Button
             variant="success"
             disabled={
-              props.offerObj.offerStatus !== offer_status.waiting_for_acceptance
+              props.offerObj.statusDescription !== 'waiting_for_acceptance'
             }
             onClick={acceptHandler}
           >
@@ -112,7 +136,7 @@ export const OfferRecord = (props) => {
           <Button
             variant="danger"
             disabled={
-              props.offerObj.offerStatus !== offer_status.waiting_for_acceptance
+              props.offerObj.statusDescription !== 'waiting_for_acceptance'
             }
             onClick={declineHandler}
           >
@@ -122,7 +146,7 @@ export const OfferRecord = (props) => {
       ) : (
         <Button
           variant="success"
-          disabled={props.offerObj.offerStatus !== offer_status.offered}
+          disabled={props.offerObj.statusDescription !== 'offered'}
           className="apply-btn"
           onClick={applyClick}
         >

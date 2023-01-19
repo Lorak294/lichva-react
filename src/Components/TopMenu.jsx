@@ -18,7 +18,7 @@ const TopMenu = (props) => {
           <CgProfile size={30} />
         </span>
         <span className="profile-span-username">
-          {`${user.firstName} ${user.lastName}`}
+          {`${user.data.firstName} ${user.data.lastName}`}
         </span>
       </span>
       <span className="logout-button-span">

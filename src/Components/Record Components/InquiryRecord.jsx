@@ -4,11 +4,15 @@ import {format} from 'date-fns';
 import ContentCard from "../ContentCard";
 
 import "./InquiryRecord.css";
+import { useAuth } from "../../Hooks/AuthProvider";
 
 // PROPS:
 // inqObj: object with inquiry data
 
 export const InquiryRecord = (props) => {
+
+    const {user} = useAuth();
+
 
     const seeResultsClick = () => {
         console.log("See results clicked on " + JSON.stringify(props.inqObj));
@@ -17,10 +21,6 @@ export const InquiryRecord = (props) => {
 
   return (
     <ContentCard className="inq-container">
-        <div>
-          <strong>Inquiry</strong>
-          <p>{props.inqObj.id}</p>
-        </div>
         <div>
           <strong>Created on:</strong>
           <p>{format(new Date(props.inqObj.creationDate), "dd/MM/yyyy")}</p>
@@ -33,7 +33,7 @@ export const InquiryRecord = (props) => {
           <strong>Installments:</strong>
           <p>{props.inqObj.installments}</p>
         </div>
-        <Button variant="primary" className="results-btn" onClick={seeResultsClick}>See results</Button>
+        {user.role !== 3 && <Button variant="primary" className="results-btn" onClick={seeResultsClick}>See results</Button>}
     </ContentCard>
   );
 };

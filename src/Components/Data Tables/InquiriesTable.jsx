@@ -14,7 +14,7 @@ import "./Table.css";
 import { Outlet } from "react-router-dom";
 import { useAuth } from "../../Hooks/AuthProvider";
 
-const InquiriesTable = (props) => {
+const InquiriesTable = () => {
   const [inqData, setInqData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [activePage, setActivePage] = useState(1);
@@ -22,28 +22,69 @@ const InquiriesTable = (props) => {
   const [waitingForData, setWaitingForData] = useState(false);
   const navigate = useNavigate();
 
-  //const user = location.state; // to trzeba zmienić na handler do zdobycia danych
   const { user } = useAuth();
 
   const pageSize = 10;
 
   const fetchInquiries = async () => {
     setWaitingForData(true);
-    // TRZEBA ZMIENIĆ ŻEBY ŚCIĄGAŁO TYLKO INQ USERA A NA RAZIE BIERZE WSZYSTKIE
-    await axios
-      .get("https://lichvanotitia.azurewebsites.net/api/Inquiry")
-      .then((response) => {
-        //console.log("inquireis have been fetched");
-        //console.log(response.data);
-        setWaitingForData(false);
-        setInqData(response.data);
-        setFilteredData(response.data);
-        updatePages(response.data.length);
-      })
-      .catch((err) => {
-        setWaitingForData(false);
-        console.log(err);
-      });
+
+    switch (user.data.roleId) {
+      case 3:
+        // get inq for user.bank
+        console.log("GETTING BANK INQUIRIES");
+
+        await axios
+          .get("https://lichvanotitia.azurewebsites.net/api/Inquiry/?bankIdFilter=1")
+          .then((response) => {
+            setWaitingForData(false);
+            setInqData(response.data);
+            console.log(response);
+            setFilteredData(response.data);
+            updatePages(response.data.length);
+          })
+          .catch((err) => {
+            setWaitingForData(false);
+            console.log(err);
+          });
+
+        break;
+
+      case 1:
+        // get inq made by user
+        console.log("GETTING USER INQUIRIES");
+
+        await axios
+          .get("https://lichvanotitia.azurewebsites.net/api/Inquiry")
+          .then((response) => {
+            setWaitingForData(false);
+            console.log("fetch offers respobse:",response);
+            setInqData(response.data);
+            setFilteredData(response.data);
+            updatePages(response.data.length);
+          })
+          .catch((err) => {
+            setWaitingForData(false);
+            console.log(err);
+          });
+
+        break;
+    }
+
+    // await axios
+    //   .get("https://lichvanotitia.azurewebsites.net/api/Inquiry")
+    //   .then((response) => {
+    //     //console.log("inquireis have been fetched");
+    //     //console.log(response.data);
+    //     setWaitingForData(false);
+    //     setInqData(response.data);
+    //     setFilteredData(response.data);
+    //     updatePages(response.data.length);
+    //   })
+    //   .catch((err) => {
+    //     setWaitingForData(false);
+    //     console.log(err);
+    //   });
 
     // setInqData(exampleInquiries);
     // setFilteredData(exampleInquiries);
@@ -121,9 +162,7 @@ const InquiriesTable = (props) => {
   };
 
   useEffect(() => {
-    if (user) {
-      fetchInquiries();
-    }
+    fetchInquiries();
   }, []);
 
   return (
@@ -139,13 +178,13 @@ const InquiriesTable = (props) => {
       </Accordion>
       <br />
       {waitingForData ? (
-        <Spinner variant="primary" animation="broder" />
+        <Spinner variant="primary" animation="border" />
       ) : filteredData.length > 0 ? (
         filteredData
           .slice((activePage - 1) * pageSize, activePage * pageSize)
-          .map((inquiry) => (
+          .map((inquiry,index) => (
             <InquiryRecord
-              key={inquiry.id}
+              key={index}
               inqObj={inquiry}
               resultsHandler={inqResultsHandler}
             />

@@ -7,18 +7,22 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useLocalStorage("user", null);
-  const [token, setToken] = useLocalStorage("user", null);
+  const [token, setToken] = useLocalStorage("token", null);
+  const [authToken, setAuthToken] = useLocalStorage("authToken",null);
   const navigate = useNavigate();
 
   // LOGIN HANDLER
   const login = async (data) => {
     setUser(data.user);
     setToken(data.token);
+    setAuthToken(data.authToken);
     axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
-    console.log("navigating to userPage!");
-    if (data.user.active) {
+    axios.defaults.headers.common['authToken'] = `${data.authToken}`;
+    if (data.user.data.active) {
+      console.log("navigating to userPage!");
       navigate("/dashboard/user");
     } else {
+      console.log("navigating to registration!");
       navigate("/dashboard/registration");
     }
   };
@@ -27,6 +31,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     setToken(null);
+    setAuthToken(null);
     delete axios.defaults.headers.common['Authorization'];
     console.log("logging out!");
     navigate("/");
@@ -37,10 +42,11 @@ export const AuthProvider = ({ children }) => {
     () => ({
       token,
       user,
+      authToken,
       login,
       logout,
     }),
-    [user]
+    [user,token,authToken]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
