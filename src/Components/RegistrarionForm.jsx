@@ -20,13 +20,14 @@ const RegistrationForm = () => {
   const [idTypes, setIdTypes] = useState([]);
   const [jobTypes, setJobTypes] = useState([]);
 
-  const { token, user, authToken, logout, login } = useAuth();
+  const { token, user, authToken, logout, login, getCallConfig } = useAuth();
   const navigate = useNavigate();
 
   const fetchJobTypes = async () => {
     try {
       const response = await axios.get(
-        "https://lichvanotitia.azurewebsites.net/api/dictionary/jobs"
+        "https://lichvanotitia.azurewebsites.net/api/dictionary/jobs",
+        getCallConfig()
       );
       setJobTypes(response.data);
     } catch (err) {
@@ -36,7 +37,7 @@ const RegistrationForm = () => {
 
   const fetchIdTypes = async () => {
     await axios
-      .get("https://lichvanotitia.azurewebsites.net/api/dictionary/idTypes")
+      .get("https://lichvanotitia.azurewebsites.net/api/dictionary/idTypes",getCallConfig())
       .then((response) => {
         //console.log("inquireis have been fetched");
         //console.log(response.data);
@@ -53,7 +54,8 @@ const RegistrationForm = () => {
     try {
       const response = await axios.put(
         "https://lichvanotitia.azurewebsites.net/api/User",
-        updatedUser.data
+        updatedUser.data,
+        getCallConfig()
       );
       login({ token: token, authToken: authToken, user: updatedUser });
     } catch (err) {

@@ -20,7 +20,7 @@ const NewInquiryForm = () => {
   const [idTypes, setIdTypes] = useState([]);
   const [jobTypes, setJobTypes] = useState([]);
 
-  const { user } = useAuth();
+  const { user, getCallConfig} = useAuth();
   const annonymous = user == null;
 
   console.log("user stored data:", user);
@@ -109,7 +109,7 @@ const NewInquiryForm = () => {
           });
       } else {
         axios
-          .post("https://lichvanotitia.azurewebsites.net/api/Inquiry", inquiry)
+          .post("https://lichvanotitia.azurewebsites.net/api/Inquiry", inquiry,getCallConfig())
           .then((response) => {
             console.log(response);
             alert(

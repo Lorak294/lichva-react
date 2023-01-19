@@ -23,19 +23,19 @@ const OffersTable = (props) => {
   const [banks, setBanks] = useState([]);
   const navigate = useNavigate();
 
-  const { user } = useAuth();
+  const { user,getCallConfig } = useAuth();
 
   const pageSize = 10;
 
   const fetchOfferStatuses = async () => {
-    axios.get('https://lichvanotitia.azurewebsites.net/api/dictionary/offerStatus').then(response => {
+    axios.get('https://lichvanotitia.azurewebsites.net/api/dictionary/offerStatus',getCallConfig()).then(response => {
       console.log("fetched statuses",response.data);
       setOfferStatuses(response.data);
     }).catch(err => console.log(err));
   }
 
   const fetchBanks = async () => {
-    axios.get('https://lichvanotitia.azurewebsites.net/api/Bank').then(response => {
+    axios.get('https://lichvanotitia.azurewebsites.net/api/Bank',getCallConfig()).then(response => {
       console.log(response.data);
       setBanks("fetched banks",response.data);
     }).catch(err => console.log(err));
@@ -52,7 +52,7 @@ const OffersTable = (props) => {
           // get inq 
           console.log("GETTING USER OFFERS");
           axios
-            .get("https://lichvanotitia.azurewebsites.net/api/Offer")
+            .get("https://lichvanotitia.azurewebsites.net/api/Offer",getCallConfig())
             .then((response) => {
               console.log(response);
               setWaitingForData(false);
@@ -68,7 +68,7 @@ const OffersTable = (props) => {
         case 3:
           console.log("GETTING BANK OFFERS");
           axios
-          .get("https://lichvanotitia.azurewebsites.net/api/Offer")
+          .get("https://lichvanotitia.azurewebsites.net/api/Offer",getCallConfig())
           .then((response) => {
             console.log(response);
             setWaitingForData(false);

@@ -22,7 +22,7 @@ const InquiriesTable = () => {
   const [waitingForData, setWaitingForData] = useState(false);
   const navigate = useNavigate();
 
-  const { user } = useAuth();
+  const { user,getCallConfig } = useAuth();
 
   const pageSize = 10;
 
@@ -35,7 +35,7 @@ const InquiriesTable = () => {
         console.log("GETTING BANK INQUIRIES");
 
         await axios
-          .get("https://lichvanotitia.azurewebsites.net/api/Inquiry/?bankIdFilter=1")
+          .get("https://lichvanotitia.azurewebsites.net/api/Inquiry/?bankIdFilter=1",getCallConfig())
           .then((response) => {
             setWaitingForData(false);
             setInqData(response.data);
@@ -55,10 +55,10 @@ const InquiriesTable = () => {
         console.log("GETTING USER INQUIRIES");
 
         await axios
-          .get("https://lichvanotitia.azurewebsites.net/api/Inquiry")
+          .get("https://lichvanotitia.azurewebsites.net/api/Inquiry",getCallConfig())
           .then((response) => {
             setWaitingForData(false);
-            console.log("fetch offers respobse:",response);
+            console.log("fetch inquiry respobse:",response);
             setInqData(response.data);
             setFilteredData(response.data);
             updatePages(response.data.length);

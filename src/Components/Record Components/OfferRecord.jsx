@@ -88,7 +88,6 @@ export const OfferRecord = (props) => {
       </div>
       <div>
         <strong>Signed Contract:</strong>
-        <p>
           {!props.offerObj.documentLink ? (
             <p>No file</p>
           ) : (
@@ -100,7 +99,6 @@ export const OfferRecord = (props) => {
               PDF
             </a>
           )}
-        </p>
       </div>
       <div>
         <strong>Status:</strong>

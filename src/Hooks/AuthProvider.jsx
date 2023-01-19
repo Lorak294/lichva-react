@@ -16,8 +16,8 @@ export const AuthProvider = ({ children }) => {
     setUser(data.user);
     setToken(data.token);
     setAuthToken(data.authToken);
-    axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
-    axios.defaults.headers.common['authToken'] = `${data.authToken}`;
+    //axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+    //axios.defaults.headers.common['authToken'] = `${data.authToken}`;
     if (data.user.data.active) {
       console.log("navigating to userPage!");
       navigate("/dashboard/user");
@@ -26,6 +26,15 @@ export const AuthProvider = ({ children }) => {
       navigate("/dashboard/registration");
     }
   };
+
+  const getCallConfig = () => {
+    return {
+      headers:{
+        Authorization: `Bearer ${token}`,
+        authToken: `${authToken}`
+      }
+    };
+  }
 
   // LOGOUT HANDLER
   const logout = () => {
@@ -45,6 +54,7 @@ export const AuthProvider = ({ children }) => {
       authToken,
       login,
       logout,
+      getCallConfig,
     }),
     [user,token,authToken]
   );
