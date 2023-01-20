@@ -114,7 +114,7 @@ const InquiriesTable = () => {
 */
     
 
-    const resultData = // API CALL 
+    const resultData = inqData // API CALL 
     setFilteredData(resultData);
     updatePages(resultData.length);
   };
