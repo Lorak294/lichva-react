@@ -30,6 +30,7 @@ export const InquiryRecord = (props) => {
           <p>{props.inqObj.ammount}</p>
         </div>
         <div>
+          {/* ds */}
           <strong>Installments:</strong>
           <p>{props.inqObj.installments}</p>
         </div>
