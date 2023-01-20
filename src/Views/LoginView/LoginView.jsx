@@ -17,22 +17,23 @@ import { refreshTokenSetup } from "../../Hooks/refreshTokenSetup";
 import { useState } from "react";
 import { Spinner } from "react-bootstrap";
 
-const adText = ` Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dui
-imperdiet sem et lectus tempus luctus. Nulla facilisi. Aliquam
-erat volutpat. Phasellus in quam in quam sodales euismod. Aenean
-euismod hendrerit arcu, lacinia consequat elit. Cras mi leo,
-ultricies a augue vel, sodales imperdiet risus. Duis aliquet nisi
-enim, sed tempus magna congue non. Mauris tincidunt euismod magna
-vel euismod.`;
+const adText = ` Lich.va to twoje narzedzie do znalezienia najlepszej oferty kredytowej. Nasze wysublimowane systemy porównujące są bezkonkurencyjne na rynku.
+Złóż wniosek już teraz i sprawdź sam! Wziąłeś kredyt we frankach? Hipoteka na 20 lat? Zakwestionuj swoje wybory życiowe i zobacz ile mogłeś zaoszczędzić korzystając z naszej strony.`;
 
 const LoginView = () => {
   const navigate = useNavigate();
   const { token, user, login } = useAuth();
   const [waitingForLogin, setWaitingForLogin] = useState(false);
+  const [userNumber,setUserNumber] = useState(45);
+  
 
   const annEnqHandler = () => {
     navigate("/annonymousinquiry");
   };
+
+  const fetchUserNumber = async () => {
+    //axios.get()
+  }
 
   // GOOGLE LOGIN - to clean up later now i want it separate
   // const [profile,setProfile] = useState([]);
@@ -66,6 +67,7 @@ const LoginView = () => {
   };
 
   useEffect(() => {
+    fetchUserNumber();
     const initClient = () => {
       gapi.client.init({
         clientId: clientId,
@@ -94,6 +96,8 @@ const LoginView = () => {
       <ContentCard className="login-card">
         <h3>One of the best Credit Comparing Websites</h3>
         <p>{adText}</p>
+        <br/>
+        <p> Mamy już {userNumber} aktywnych użytkowników</p>
         <GoogleLogin
           clientId={clientId}
           buttonText="Sign in with Google"

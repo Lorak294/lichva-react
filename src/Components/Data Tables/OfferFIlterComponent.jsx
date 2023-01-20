@@ -31,6 +31,10 @@ export const OfferFilterComponent = (props) => {
             maxAmmount: event.target.maxAmmount.value,
             minInstallments: event.target.minInstallments.value,
             maxInstallments: event.target.maxInstallments.value,
+            minMonthInstallments: event.target.minMonthInstallments.value,
+            maxMonthInstallments: event.target.maxMonthInstallments.value,
+            minPercentage: event.target.minPercentage.value,
+            maxPercentage: event.target.maxPercentage.value,
             banks: selectedBanks,
             status: selectedStatuses,
             sortby: event.target.sortby.value,
@@ -41,6 +45,9 @@ export const OfferFilterComponent = (props) => {
 
         props.filterList(filterConditions);
     }
+
+
+    console.log("PROP BANKS", props.banks);
 
   return (
     // <ContentCard className="main-container">
@@ -85,9 +92,33 @@ export const OfferFilterComponent = (props) => {
               </Form.Group>
             </div>
           </div>
+
+          <div className="percentage-div">
+            <strong>Percentage</strong>
+            <div className="filtering-section">
+              <Form.Group className="mb-3" controlId="minPercentage">
+                <Form.Label>Min</Form.Label>
+                <Form.Control
+                  type="number"
+                  defaultValue={""}
+                  min="1"
+                  step="1"
+                />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="maxPercentage">
+                <Form.Label>Max</Form.Label>
+                <Form.Control
+                  type="number"
+                  defaultValue={""}
+                  min="1"
+                  step="1"
+                />
+              </Form.Group>
+            </div>
+          </div>
           
           <div className="ammount-div">
-            <strong>Ammount</strong>
+            <strong>Requested Value</strong>
             <div className="filtering-section">
               <Form.Group className="mb-3" controlId="minAmmount">
                 <Form.Label>Min</Form.Label>
@@ -112,6 +143,30 @@ export const OfferFilterComponent = (props) => {
             </div>
           </div>
 
+          <div className="month-installments-div">
+            <strong>Monthly installments</strong>
+            <div className="filtering-section">
+              <Form.Group className="mb-3" controlId="minMonthInstallments">
+                <Form.Label>Min</Form.Label>
+                <Form.Control
+                  type="number"
+                  defaultValue={""}
+                  min="1"
+                  step="1"
+                />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="maxMonthInstallments">
+                <Form.Label>Max</Form.Label>
+                <Form.Control
+                  type="number"
+                  defaultValue={""}
+                  min="1"
+                  step="1"
+                />
+              </Form.Group>
+            </div>
+          </div>
+
           <div className="bank-div">
             <strong>Banks</strong>
             <Form.Group  className="mb-3" controlId="banks">
@@ -119,6 +174,9 @@ export const OfferFilterComponent = (props) => {
                 aria-label="Select Banks"
                 multiple
                 >
+                  {/* {props.banks.map((bank) => {
+                    <option selected key={bank.id} value={bank.id}>{bank.name}</option>
+                  })} */}
                     <option selected value={1001}>Bank 1</option>
                     <option selected value={2001}>Bank 2</option>
                     <option selected value={3001}>Bank 3</option>
@@ -153,8 +211,10 @@ export const OfferFilterComponent = (props) => {
                 >
                     <option value="creationDate">Created on</option>
                     <option value="bankId">Bank</option>
-                    <option value="ammount">Ammount</option>
+                    <option value="ammount">Requested Value</option>
                     <option value="installments">Installments</option>
+                    <option value="percentage">Percentage</option>
+                    <option value="monthlyInstallments">Monthly installments</option>
                     <option value="offerStatus">Status</option>
                 </Form.Select>
             </Form.Group>

@@ -37,7 +37,7 @@ const OffersTable = (props) => {
   const fetchBanks = async () => {
     axios.get('https://lichvanotitia.azurewebsites.net/api/Bank',getCallConfig()).then(response => {
       console.log(response.data);
-      setBanks("fetched banks",response.data);
+      setBanks(response.data);
     }).catch(err => console.log(err));
   }
 
@@ -45,14 +45,14 @@ const OffersTable = (props) => {
     setWaitingForData(true);
     // const response = await axios.get("api_URL_HERE").catch(err => console.log(err));
     if (props.refInq) {
-      console.log("SIMUALTING GETTING INQUIRY OFFERS FOR INQ:", props.refInq);
+      console.log("USER OFFERS:", props.refInq);
     } else {
       switch (user.data.roleId) {
         case 1:
           // get inq 
           console.log("GETTING USER OFFERS");
           axios
-            .get("https://lichvanotitia.azurewebsites.net/api/Offer",getCallConfig())
+            .get("https://lichvanotitia.azurewebsites.net/api/User/offers",getCallConfig())
             .then((response) => {
               console.log(response);
               setWaitingForData(false);
@@ -68,7 +68,7 @@ const OffersTable = (props) => {
         case 3:
           console.log("GETTING BANK OFFERS");
           axios
-          .get("https://lichvanotitia.azurewebsites.net/api/Offer",getCallConfig())
+          .get("https://lichvanotitia.azurewebsites.net/api/Employee/offers",getCallConfig())
           .then((response) => {
             console.log(response);
             setWaitingForData(false);
@@ -86,50 +86,55 @@ const OffersTable = (props) => {
   };
 
   const applyFiltersHandler = (filterConditions) => {
+    
+    /*
     // console.log("FILTER CONDITIONS: ");
     // console.log(filterConditions);
     // console.log("DATA: ");
     // console.log(offData);
 
-    const resultData = offData
-      .filter(
-        (offer) =>
-          (filterConditions.minDate === "" ||
-            Date.parse(offer.creationDate) >=
-              Date.parse(filterConditions.minDate)) &&
-          (filterConditions.maxDate === "" ||
-            Date.parse(offer.creationDate) <=
-              Date.parse(filterConditions.maxDate)) &&
-          (filterConditions.minAmmount === "" ||
-            offer.ammount >= filterConditions.minAmmount) &&
-          (filterConditions.maxAmmount === "" ||
-            offer.ammount <= filterConditions.maxAmmount) &&
-          (filterConditions.minInstallments === "" ||
-            offer.installments >= filterConditions.minInstallments) &&
-          (filterConditions.maxInstallments === "" ||
-            offer.installments <= filterConditions.maxInstallments) &&
-          (filterConditions.banks.length === 0 ||
-            filterConditions.banks === "" ||
-            filterConditions.banks.includes(offer.bankId)) &&
-          (filterConditions.status.length === 0 ||
-            filterConditions.status === "" ||
-            filterConditions.status.includes(offer.offerStatus))
-      )
-      .sort((a, b) => {
-        let res;
+    // const resultData = offData
+    //   .filter(
+    //     (offer) =>
+    //       (filterConditions.minDate === "" ||
+    //         Date.parse(offer.creationDate) >=
+    //           Date.parse(filterConditions.minDate)) &&
+    //       (filterConditions.maxDate === "" ||
+    //         Date.parse(offer.creationDate) <=
+    //           Date.parse(filterConditions.maxDate)) &&
+    //       (filterConditions.minAmmount === "" ||
+    //         offer.ammount >= filterConditions.minAmmount) &&
+    //       (filterConditions.maxAmmount === "" ||
+    //         offer.ammount <= filterConditions.maxAmmount) &&
+    //       (filterConditions.minInstallments === "" ||
+    //         offer.installments >= filterConditions.minInstallments) &&
+    //       (filterConditions.maxInstallments === "" ||
+    //         offer.installments <= filterConditions.maxInstallments) &&
+    //       (filterConditions.banks.length === 0 ||
+    //         filterConditions.banks === "" ||
+    //         filterConditions.banks.includes(offer.bankId)) &&
+    //       (filterConditions.status.length === 0 ||
+    //         filterConditions.status === "" ||
+    //         filterConditions.status.includes(offer.offerStatus))
+    //   )
+    //   .sort((a, b) => {
+    //     let res;
 
-        if (a[filterConditions.sortby] < b[filterConditions.sortby]) {
-          res = -1;
-        } else if (a[filterConditions.sortby] > b[filterConditions.sortby]) {
-          res = 1;
-        } else {
-          res = 0;
-        }
+    //     if (a[filterConditions.sortby] < b[filterConditions.sortby]) {
+    //       res = -1;
+    //     } else if (a[filterConditions.sortby] > b[filterConditions.sortby]) {
+    //       res = 1;
+    //     } else {
+    //       res = 0;
+    //     }
 
-        if (filterConditions.sortMode === "desc") res = res * -1;
+    //     if (filterConditions.sortMode === "desc") res = res * -1;
 
-        return res;
-      });
+    //     return res;
+    //   });
+
+    */
+    const resultData = // API CALL 
 
     setFilteredData(resultData);
     updatePages(resultData.length);
@@ -173,6 +178,8 @@ const OffersTable = (props) => {
           <Accordion.Body>
             <OfferFilterComponent
               filterList={applyFiltersHandler}
+              banks={banks}
+              offerStatuses={offerStatuses}
             ></OfferFilterComponent>
           </Accordion.Body>
         </Accordion.Item>

@@ -35,7 +35,7 @@ const InquiriesTable = () => {
         console.log("GETTING BANK INQUIRIES");
 
         await axios
-          .get("https://lichvanotitia.azurewebsites.net/api/Inquiry/?bankIdFilter=1",getCallConfig())
+          .get("https://lichvanotitia.azurewebsites.net/api/Employee/inquiries",getCallConfig())
           .then((response) => {
             setWaitingForData(false);
             setInqData(response.data);
@@ -55,7 +55,7 @@ const InquiriesTable = () => {
         console.log("GETTING USER INQUIRIES");
 
         await axios
-          .get("https://lichvanotitia.azurewebsites.net/api/Inquiry",getCallConfig())
+          .get("https://lichvanotitia.azurewebsites.net/api/User/inquiries",getCallConfig())
           .then((response) => {
             setWaitingForData(false);
             console.log("fetch inquiry respobse:",response);
@@ -70,25 +70,6 @@ const InquiriesTable = () => {
 
         break;
     }
-
-    // await axios
-    //   .get("https://lichvanotitia.azurewebsites.net/api/Inquiry")
-    //   .then((response) => {
-    //     //console.log("inquireis have been fetched");
-    //     //console.log(response.data);
-    //     setWaitingForData(false);
-    //     setInqData(response.data);
-    //     setFilteredData(response.data);
-    //     updatePages(response.data.length);
-    //   })
-    //   .catch((err) => {
-    //     setWaitingForData(false);
-    //     console.log(err);
-    //   });
-
-    // setInqData(exampleInquiries);
-    // setFilteredData(exampleInquiries);
-    // updatePages(exampleInquiries.length);
   };
 
   const applyFiltersHandler = (filterConditions) => {
@@ -96,7 +77,7 @@ const InquiriesTable = () => {
     // console.log(filterConditions);
     //console.log("DATA: ");
     //console.log(inqData);
-
+    /*
     const resultData = inqData
       .filter(
         (inquiry) =>
@@ -130,7 +111,10 @@ const InquiriesTable = () => {
 
         return res;
       });
+*/
+    
 
+    const resultData = // API CALL 
     setFilteredData(resultData);
     updatePages(resultData.length);
   };

@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-import ContentCard from "../../Components/ContentCard";
-import OffersTable from "../../Components/Data Tables/OffersTable";
 import { Button } from "react-bootstrap";
 import { useAuth } from "../../Hooks/AuthProvider";
 

@@ -22,12 +22,30 @@ export const OfferRecord = (props) => {
     props.offerApply(props.offerObj);
   };
 
-  const declineHandler = () => {
+  const declineHandler = (event) => {
+    event.target.disabled = true;
+    document.getElementById(`acceptButton${props.offerObj.id}`).disabled= true;
     console.log("decline clicked");
+        // axios.put(... , {...props.offerObj, statusId: 4})
+          // .then( (response) => {
+          //   alert("Your application will be processed now. You can check the progress in My Offers section. Thank you for your application.")
+          //   navigate("/dashboard/user");
+          // }
+          // ).catch((err) => console.log(err));
   };
 
-  const acceptHandler = () => {
+  const acceptHandler = (event) => {
     console.log("accept clicked");
+    event.target.disabled = true;
+    document.getElementById(`declineButton${props.offerObj.id}`).disabled= true;
+    // axios.put(... , {...props.offerObj, statusId: 3})
+          // .then( (response) => {
+          //   alert("Your application will be processed now. You can check the progress in My Offers section. Thank you for your application.")
+          //   navigate("/dashboard/user");
+          // }
+          // ).catch((err) => console.log(err));
+
+
   };
 
   const applicantDetailHandler = () => {
@@ -128,6 +146,7 @@ export const OfferRecord = (props) => {
               props.offerObj.statusDescription !== 'waiting_for_acceptance'
             }
             onClick={acceptHandler}
+            id={`acceptButton${props.offerObj.id}`}
           >
             Accept
           </Button>
@@ -137,6 +156,7 @@ export const OfferRecord = (props) => {
               props.offerObj.statusDescription !== 'waiting_for_acceptance'
             }
             onClick={declineHandler}
+            id={`declineButton${props.offerObj.id}`}
           >
             Decline
           </Button>
