@@ -1,0 +1,10 @@
+.details-container{
+    background-color: white;
+}
+
+.elements-div{
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}

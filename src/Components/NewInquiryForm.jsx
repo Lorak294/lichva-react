@@ -289,7 +289,6 @@ const NewInquiryForm = () => {
                   required
                   type="text"
                   disabled={!selectedGovId || !annonymous}
-                  placeholder={selectedGovId}
                   readOnly={!annonymous}
                   defaultValue={annonymous ? "" : user.data.idNumber}
                 />

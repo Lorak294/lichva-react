@@ -53,6 +53,7 @@ export const OfferRecord = (props) => {
 
   const applicantDetailHandler = () => {
     console.log("details about applicant clicked");
+    props.userDetails(props.offerObj);
   };
 
   const getBankName = () => {

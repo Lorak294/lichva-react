@@ -9,9 +9,9 @@ import InquiriesTable from "./Components/Data Tables/InquiriesTable";
 import OffersTable from "./Components/Data Tables/OffersTable";
 import InquiryResults from "./Components/InquiryResults";
 import RegistrationForm from "./Components/RegistrarionForm";
+import { UserDetails } from "./Components/UserDetails";
 
 import {ProtectedLayout} from "./Routing/ProtectedLayout";
-import BankAdminPannel from "./Views/UserView/BankAdminPannel";
 import { AnnInqResult } from "./Components/AnnInqResult";
 function App() {
   return (
@@ -31,6 +31,7 @@ function App() {
             
             <Route path="offers" element={<OffersTable />}>
               <Route path="apply" element={<OfferApplication />} />
+              <Route path="applicant" element={<UserDetails/>}/>
             </Route>
             
             <Route path="inquiries" element={<InquiriesTable />}>

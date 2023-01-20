@@ -47,9 +47,8 @@ const OffersTable = (props) => {
     if (props.refInq) {
       console.log("GETTING INQ RESULTS",props.refInq);
       axios
-        .get(`https://lichvanotitia.azurewebsites.net/api/Offer?inquiryId=${props.refInq.id}`,getCallConfig())
+        .get(`https://lichvanotitia.azurewebsites.net/api/Offer?inquiryId=${props.refInq.inquiryId}`,getCallConfig())
         .then((response) => {
-          console.log(response);
           setWaitingForData(false);
           setOffData(response.data);
           setFilteredData(response.data);
@@ -200,6 +199,10 @@ const OffersTable = (props) => {
     navigate(`/dashboard/user/offers/apply`, { state: offerObj });
   };
 
+  const userDetailsHandler= (offerObj) => {
+    navigate(`/dashboard/user/offers/applicant`, { state: offerObj });
+  };
+
   useEffect(() => {
     fetchOfferStatuses();
     fetchBanks();
@@ -231,6 +234,7 @@ const OffersTable = (props) => {
               key={offer.id}
               offerObj={offer}
               offerApply={offerApplyHandler}
+              userDetails={userDetailsHandler}
               offerStatuses={offerStatuses}
               banks={banks}
             />

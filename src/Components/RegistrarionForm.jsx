@@ -241,7 +241,6 @@ const RegistrationForm = () => {
                 required
                 type="text"
                 disabled={!selectedGovId}
-                placeholder={selectedGovId}
                 defaultValue={""}
               />
               <Form.Control.Feedback type="invalid">
