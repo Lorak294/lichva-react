@@ -24,21 +24,24 @@ const LoginView = () => {
   const navigate = useNavigate();
   const { token, user, login } = useAuth();
   const [waitingForLogin, setWaitingForLogin] = useState(false);
-  const [userNumber,setUserNumber] = useState(45);
-  
+  const [userNumber, setUserNumber] = useState("");
 
   const annEnqHandler = () => {
     navigate("/annonymousinquiry");
   };
 
   const fetchUserNumber = async () => {
-    //axios.get()
-  }
+     axios
+      .get("https://lichvanotitia.azurewebsites.net/api/User/total_count")
+      .then((response) => setUserNumber(response.data.count))
+      .catch((err) => console.log(err));
+  };
 
   // GOOGLE LOGIN - to clean up later now i want it separate
   // const [profile,setProfile] = useState([]);
   //const clientId = "625318245450-ac4a4f3rldhgcb2fp1tsg1o8k5fiumc2.apps.googleusercontent.com";
-  const clientId = "975889795934-d16i8h32h946jtboaqn9fcqntteleqgo.apps.googleusercontent.com";
+  const clientId =
+    "975889795934-d16i8h32h946jtboaqn9fcqntteleqgo.apps.googleusercontent.com";
 
   const onLoginSuccess = (googleRes) => {
     setWaitingForLogin(true);
@@ -96,8 +99,8 @@ const LoginView = () => {
       <ContentCard className="login-card">
         <h3>One of the best Credit Comparing Websites</h3>
         <p>{adText}</p>
-        <br/>
-        <p> Mamy już {userNumber} aktywnych użytkowników</p>
+        <br />
+        <p> Mamy już <strong>{userNumber}</strong> aktywnych użytkowników</p>
         <GoogleLogin
           clientId={clientId}
           buttonText="Sign in with Google"

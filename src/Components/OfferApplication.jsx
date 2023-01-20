@@ -16,7 +16,7 @@ export const OfferApplication = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const {token,authToken} = useAuth();
+  const { token, authToken, getCallConfig } = useAuth();
 
   const handleCancel = () => {
     navigate(-1);
@@ -28,41 +28,51 @@ export const OfferApplication = () => {
     setFile(event.target.files[0]);
   };
 
+
+  console.log(file);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
-      setValidated(true);
+      setValidated(false);
     } else {
       setValidated(true);
 
-
-      console.log(file);
       if (file) {
-        
         let formData = new FormData();
-        formData.append('file', file);
+        formData.append("file", file);
 
-        axios.post(`https://lichvanotitia.azurewebsites.net/api/Offer/${offerObj.id}/document/upload`, formData,
-        {
-          headers: {
-                'authorization': `Bearer ${token}`,
-                'authToken': `${authToken}`,
-                'content-type': 'multipart/form-data'
-               }
-        }).then((response)=>{
-          
-          // axios.put(... , {...offerObj, statusId: 2})
-          // .then( (response) => {
-          //   alert("Your application will be processed now. You can check the progress in My Offers section. Thank you for your application.")
-          //   navigate("/dashboard/user");
-          // }
-          // ).catch((err) => console.log(err));
-
-         
-        }).catch((err) => console.log(err));
+        axios
+          .post(
+            `https://lichvanotitia.azurewebsites.net/api/Offer/${offerObj.id}/document/upload`,
+            formData,
+            {
+              headers: {
+                authorization: `Bearer ${token}`,
+                authToken: `${authToken}`,
+                "content-type": "multipart/form-data",
+              },
+            }
+          )
+          .then((response) => {
+            axios
+              .put(
+                `https://lichvanotitia.azurewebsites.net/api/Offer/${offerObj.id}/updateStatus?newStateId=2`,
+                null,
+                getCallConfig()
+              )
+              .then((response) => {
+                alert(
+                  "Your application will be processed now. You can check the progress in My Offers section. Thank you for your application."
+                );
+                navigate("/dashboard/user");
+              })
+              .catch((err) => console.log(err));
+          })
+          .catch((err) => console.log(err));
       }
     }
   };
@@ -90,10 +100,10 @@ export const OfferApplication = () => {
 
             <div>
               <Form.Group controlId="contractFile" className="mb-3">
-                <Form.Label>Your signed contract</Form.Label>
-                <Form.Control type="file" required onChange={selectFile} />
+                <Form.Label>Your signed contract (PDF)</Form.Label>
+                <Form.Control type="file" required onChange={selectFile} isInvalid={!file || file.type !== "application/pdf"}/>
                 <Form.Control.Feedback type="invalid">
-                  You must upload a file
+                  You must upload a PDF file
                 </Form.Control.Feedback>
               </Form.Group>
             </div>
@@ -102,7 +112,7 @@ export const OfferApplication = () => {
             {" "}
             Cancel
           </Button>
-          <Button variant="success" type="submit">
+          <Button variant="success" type="submit" disabled={!file || file.type !== "application/pdf"}>
             {" "}
             Apply
           </Button>

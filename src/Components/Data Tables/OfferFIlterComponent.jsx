@@ -174,12 +174,7 @@ export const OfferFilterComponent = (props) => {
                 aria-label="Select Banks"
                 multiple
                 >
-                  {/* {props.banks.map((bank) => {
-                    <option selected key={bank.id} value={bank.id}>{bank.name}</option>
-                  })} */}
-                    <option selected value={1001}>Bank 1</option>
-                    <option selected value={2001}>Bank 2</option>
-                    <option selected value={3001}>Bank 3</option>
+                  {props.banks.map((bankItem) => <option selected value={bankItem.id} key={bankItem.id}>{bankItem.name}</option>)}
                 </Form.Select>
             </Form.Group>
           </div>
@@ -191,10 +186,7 @@ export const OfferFilterComponent = (props) => {
                 aria-label="Select Status"
                 multiple
                 >
-                    <option selected value={offer_status.offered}>Offered</option>
-                    <option selected value={offer_status.waiting_for_acceptance}>Waiting for acceptance</option>
-                    <option selected value={offer_status.accepted}>Accepted</option>
-                    <option selected value={offer_status.declined}>Declined</option>
+                  {props.offerStatuses.map((statusItem) => <option selected value={statusItem.id} key={statusItem.id}>{statusItem.name}</option>)}
                 </Form.Select>
             </Form.Group>
           </div>

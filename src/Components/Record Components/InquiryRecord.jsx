@@ -33,7 +33,7 @@ export const InquiryRecord = (props) => {
           <strong>Installments:</strong>
           <p>{props.inqObj.installments}</p>
         </div>
-        {user.role !== 3 && <Button variant="primary" className="results-btn" onClick={seeResultsClick}>See results</Button>}
+        {user.data.roleId !== 3 && <Button variant="primary" className="results-btn" onClick={seeResultsClick}>See results</Button>}
     </ContentCard>
   );
 };
