@@ -28,17 +28,19 @@ export const OfferApplication = () => {
     setFile(event.target.files[0]);
   };
 
+
+  console.log(file);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
-      setValidated(true);
+      setValidated(false);
     } else {
       setValidated(true);
 
-      console.log(file);
       if (file) {
         let formData = new FormData();
         formData.append("file", file);
@@ -98,10 +100,10 @@ export const OfferApplication = () => {
 
             <div>
               <Form.Group controlId="contractFile" className="mb-3">
-                <Form.Label>Your signed contract</Form.Label>
-                <Form.Control type="file" required onChange={selectFile} />
+                <Form.Label>Your signed contract (PDF)</Form.Label>
+                <Form.Control type="file" required onChange={selectFile} isInvalid={!file || file.type !== "application/pdf"}/>
                 <Form.Control.Feedback type="invalid">
-                  You must upload a file
+                  You must upload a PDF file
                 </Form.Control.Feedback>
               </Form.Group>
             </div>
@@ -110,7 +112,7 @@ export const OfferApplication = () => {
             {" "}
             Cancel
           </Button>
-          <Button variant="success" type="submit">
+          <Button variant="success" type="submit" disabled={!file || file.type !== "application/pdf"}>
             {" "}
             Apply
           </Button>
