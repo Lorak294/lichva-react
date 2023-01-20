@@ -16,7 +16,7 @@ export const OfferApplication = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const {token,authToken} = useAuth();
+  const { token, authToken, getCallConfig } = useAuth();
 
   const handleCancel = () => {
     navigate(-1);
@@ -38,31 +38,39 @@ export const OfferApplication = () => {
     } else {
       setValidated(true);
 
-
       console.log(file);
       if (file) {
-        
         let formData = new FormData();
-        formData.append('file', file);
+        formData.append("file", file);
 
-        axios.post(`https://lichvanotitia.azurewebsites.net/api/Offer/${offerObj.id}/document/upload`, formData,
-        {
-          headers: {
-                'authorization': `Bearer ${token}`,
-                'authToken': `${authToken}`,
-                'content-type': 'multipart/form-data'
-               }
-        }).then((response)=>{
-          
-          // axios.put(... , {...offerObj, statusId: 2})
-          // .then( (response) => {
-          //   alert("Your application will be processed now. You can check the progress in My Offers section. Thank you for your application.")
-          //   navigate("/dashboard/user");
-          // }
-          // ).catch((err) => console.log(err));
-
-         
-        }).catch((err) => console.log(err));
+        axios
+          .post(
+            `https://lichvanotitia.azurewebsites.net/api/Offer/${offerObj.id}/document/upload`,
+            formData,
+            {
+              headers: {
+                authorization: `Bearer ${token}`,
+                authToken: `${authToken}`,
+                "content-type": "multipart/form-data",
+              },
+            }
+          )
+          .then((response) => {
+            axios
+              .put(
+                `https://lichvanotitia.azurewebsites.net/api/Offer/${offerObj.id}/updateStatus?newStateId=2`,
+                null,
+                getCallConfig()
+              )
+              .then((response) => {
+                alert(
+                  "Your application will be processed now. You can check the progress in My Offers section. Thank you for your application."
+                );
+                navigate("/dashboard/user");
+              })
+              .catch((err) => console.log(err));
+          })
+          .catch((err) => console.log(err));
       }
     }
   };

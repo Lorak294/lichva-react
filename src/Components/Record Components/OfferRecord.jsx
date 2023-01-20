@@ -1,8 +1,9 @@
 import React from "react";
+import axios from "axios";
 import { Button } from "react-bootstrap";
 import { format } from "date-fns";
 import ContentCard from "../ContentCard";
-import { offer_status } from "../../Constants and definitions/Enums";
+
 
 import "./OfferRecord.css";
 import { useAuth } from "../../Hooks/AuthProvider";
@@ -13,7 +14,7 @@ import { useAuth } from "../../Hooks/AuthProvider";
 // offerStatuses
 
 export const OfferRecord = (props) => {
-  const { user } = useAuth();
+  const { user,getCallConfig } = useAuth();
 
   const bankPerspective = user && user.data.roleId == 3;
   const applyClick = () => {
@@ -26,24 +27,26 @@ export const OfferRecord = (props) => {
     event.target.disabled = true;
     document.getElementById(`acceptButton${props.offerObj.id}`).disabled= true;
     console.log("decline clicked");
-        // axios.put(... , {...props.offerObj, statusId: 4})
-          // .then( (response) => {
-          //   alert("Your application will be processed now. You can check the progress in My Offers section. Thank you for your application.")
-          //   navigate("/dashboard/user");
-          // }
-          // ).catch((err) => console.log(err));
+    
+    axios
+    .put(
+      `https://lichvanotitia.azurewebsites.net/api/Offer/${props.offerObj.id}/updateStatus?newStateId=4`,
+      null,
+      getCallConfig()
+    ).catch((err) => console.log(err));
   };
 
   const acceptHandler = (event) => {
     console.log("accept clicked");
     event.target.disabled = true;
     document.getElementById(`declineButton${props.offerObj.id}`).disabled= true;
-    // axios.put(... , {...props.offerObj, statusId: 3})
-          // .then( (response) => {
-          //   alert("Your application will be processed now. You can check the progress in My Offers section. Thank you for your application.")
-          //   navigate("/dashboard/user");
-          // }
-          // ).catch((err) => console.log(err));
+
+    axios
+    .put(
+      `https://lichvanotitia.azurewebsites.net/api/Offer/${props.offerObj.id}/updateStatus?newStateId=3`,
+      null,
+      getCallConfig()
+    ).catch((err) => console.log(err));
 
 
   };
